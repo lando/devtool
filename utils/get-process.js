@@ -1,5 +1,7 @@
-/*
- * TBD
+/**
+ * Identify the runtime environment type.
+ *
+ * @returns {string} 'browser', 'node', or 'unknown'.
  */
 export default function getProcess() {
   // probably running in a browser

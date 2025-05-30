@@ -1,11 +1,13 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-/*
- * Like readdirsync but returns absolute paths and only directories
+/**
+ * Read a directory and return absolute paths to sub-directories only.
  *
- * NOTE: we are using something like this mostly just for bootstrapping eg
- * we want it to have minimal deps eg no LODASH or GLOB
+ * NOTE: This avoids external dependencies for bootstrapping.
+ *
+ * @param {string} dir - Directory to read.
+ * @returns {string[]} Array of absolute directory paths.
  */
 export default function readDirAbsolute(dir) {
   return fs

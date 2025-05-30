@@ -2,6 +2,12 @@ import camelCase from 'lodash-es/camelCase';
 import camelcaseKeys from 'camelcase-keys';
 
 // @TODO: throw error for nully values?
+/**
+ * Decode dotted or object keys to camelCase.
+ *
+ * @param {any} data - Data to decode.
+ * @returns {any} Decoded value.
+ */
 export default function decode(data) {
   // if we have a nully value then just return
   if (data === null || data === undefined) return data;

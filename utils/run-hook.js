@@ -1,8 +1,16 @@
 import createDebug from '../lib/debug.js';
 import load from './module-loader.js';
 
-/*
- * TBD
+/**
+ * Execute a named hook for a set of runners.
+ *
+ * @param {string} event - Hook name.
+ * @param {object} data - Data passed to hook functions.
+ * @param {object} [hooks] - Collection of hook arrays keyed by name.
+ * @param {object} [context] - Context object passed as `this`.
+ * @param {Function} [debug] - Debug logger.
+ * @param {Function} [errorHandler] - Optional handler for the first failure.
+ * @returns {Promise<{successes: Array, failures: Array}>} Hook results.
  */
 export default async function runHook(event, data, hooks = [], context = {}, debug = createDebug('devtool:run-hooks'), errorHandler) {
   // debugger

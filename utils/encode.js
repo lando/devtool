@@ -2,6 +2,12 @@ import encodeKeys from './encode-keys.js';
 import kebabCase from 'lodash-es/kebabCase.js';
 
 // @TODO: throw error for nully values?
+/**
+ * Encode a value by converting camelCase keys to kebab-case.
+ *
+ * @param {any} data - Data to encode.
+ * @returns {any} Encoded value.
+ */
 export default function encode(data) {
   // if we have a nully value then just return
   if (data === null || data === undefined) return data;

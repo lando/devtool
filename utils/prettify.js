@@ -1,8 +1,12 @@
 import os from 'node:os';
 
-/*
- * prettify object data for better tabular output
- * @TODO: is it ok to assume that all data in an array will be the same type?
+/**
+ * Convert data structures into human friendly strings.
+ *
+ * @param {*} data - Data to prettify.
+ * @param {object} [options]
+ * @param {string} [options.arraySeparator=', '] - Delimiter for string arrays.
+ * @returns {string|*} Prettified data or original value.
  */
 export default function prettify(data, { arraySeparator = ', ' } = {}) {
   // if undefined then just return an empty string

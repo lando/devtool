@@ -15,6 +15,15 @@ const _write = (file, data) => {
 // @TODO: maybe extension should be in {options}?
 // @TODO: error handling, defaults etc?
 // @TODO: better data type handling
+/**
+ * Write data to a file with automatic serialization.
+ *
+ * @param {string} file - Destination file path.
+ * @param {*} data - Data to write.
+ * @param {object} [options]
+ * @param {string} [options.extension] - Extension override.
+ * @param {boolean} [options.forcePosixLineEndings=false] - Normalize line endings.
+ */
 export default function write(file, data, options = {}) {
   // set extension if not set
   const extension = options.extension ?? path.extname(file);

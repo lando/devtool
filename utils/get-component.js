@@ -6,8 +6,17 @@ import merge from './merge.js';
 
 import Config from '../lib/config.js';
 
-/*
- * TBD
+/**
+ * Resolve and load a component class from a registry.
+ *
+ * @param {string} component - Component id to load.
+ * @param {Config} [registry] - Component registry.
+ * @param {object} [options]
+ * @param {object} [options.aliases] - Mapping of aliases to component ids.
+ * @param {object} [options.config] - Configuration to merge into the class.
+ * @param {object} [options.cache] - Object used to cache loaded classes.
+ * @param {Function} [options.debug] - Debug logger factory.
+ * @returns {Function} Loaded component class.
  */
 export default function getComponent(
   component,

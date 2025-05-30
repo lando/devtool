@@ -2,11 +2,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import readdirSyncAbsDir from './readdir-absolute.js';
 
-/*
- * Recurses through directories to given depth looking for plugins
+/**
+ * Recursively search for plugin directories.
  *
- * NOTE: we are using something like this mostly just for bootstrapping eg
- * we want it to have minimal deps eg no LODASH or GLOB
+ * NOTE: This is intentionally lightweight and avoids heavy dependencies.
+ *
+ * @param {string} dir - Directory to start searching in.
+ * @param {number} [depth=1] - How deep to recurse into child directories.
+ * @returns {string[]} Array of plugin directories found.
  */
 // @TODO: make pConfigFiles configurable?
 export default function findPlugins(dir, depth = 1) {

@@ -1,3 +1,6 @@
+/**
+ * Error subclass used for normalized error objects.
+ */
 class StandardError extends Error {
   constructor(error) {
     // if already an error then lets pass through appropriately

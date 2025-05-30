@@ -3,8 +3,10 @@ import getPlatform from './get-platform.js';
 
 const env = getEnvironment();
 
-/*
- * TBD
+/**
+ * Determine the runtime context of the current process.
+ *
+ * @returns {string} One of `remote`, `server`, `ci`, or `local`.
  */
 export default function getContext() {
   // running on a remote development option

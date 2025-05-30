@@ -1,5 +1,8 @@
-/*
- * TBD
+/**
+ * Determine the size/length of various data types.
+ *
+ * @param {*} data - Value to measure.
+ * @returns {number} Size or length of the input.
  */
 export default function getSize(data) {
   // if null or undefined return 0
