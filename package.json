@@ -1,12 +1,12 @@
 {
   "name": "@lando/devtool",
   "description": "A next generation development tool.",
-  "version": "4.0.0-unstable.6",
+  "version": "4.0.0-unstable.1",
   "author": "Mike Pirog @pirog",
   "license": "GPL-3.0",
-  "repository": "lando/core-next",
-  "bugs": "https://github.com/lando/core-next/issues/new/choose",
-  "homepage": "https://github.com/lando/core-next",
+  "repository": "lando/devtool",
+  "bugs": "https://github.com/lando/devtool/issues/new/choose",
+  "homepage": "https://github.com/lando/devtool",
   "keywords": [
     "devtool",
     "devtool-plugin",
@@ -29,7 +29,7 @@
     "lint": "eslint . --ext .cjs --ext .js --ext .mjs",
     "pkg": "pkg --config package.json --targets node20 --options dns-result-order=ipv4first bin/lando",
     "test": "bun run lint && && bun run unit && bun run leia",
-    "unit": "bun test"
+    "unit": "bun test --coverage"
   },
   "oclif": {
     "bin": "devtool",
