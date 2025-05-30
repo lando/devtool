@@ -1,0 +1,13 @@
+name: trivial
+services:
+  defaults:
+    type: apache
+
+plugins:
+  '@lando/core': ./../..
+
+# get this app to use the new v4 runtime
+config:
+  core:
+    development: true
+    telemetry: false

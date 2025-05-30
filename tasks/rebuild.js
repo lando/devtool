@@ -1,8 +1,6 @@
-'use strict';
+import _ from 'lodash-es';
 
-const _ = require('lodash');
-
-module.exports = cli => {
+export default (cli, lando) => {
   return {
     command: 'rebuild',
     describe: 'Rebuilds your app from scratch, preserving data',
@@ -14,9 +12,9 @@ module.exports = cli => {
     //   },
     //   yes: cli.confirm('Are you sure you want to rebuild?'),
     // },
-    run: options => {
+    run: (options) => {
       if (!options.yes) {
-        console.log(cli.makeArt('appRebuild', {phase: 'abort'}));
+        console.log(cli.makeArt('appRebuild', { phase: 'abort' }));
         return;
       }
       // Try to get our app
@@ -25,12 +23,12 @@ module.exports = cli => {
       if (app) {
         // If user has given us options then set those
         if (!_.isEmpty(options.service)) {
-          app.opts = _.merge({}, app.opts, {services: options.service});
+          app.opts = _.merge({}, app.opts, { services: options.service });
         }
-        console.log(cli.makeArt('appRebuild', {name: app.name, phase: 'pre'}));
+        console.log(cli.makeArt('appRebuild', { name: app.name, phase: 'pre' }));
         return app.rebuild().then(() => {
           const type = !_.isEmpty(app.warnings) ? 'report' : 'post';
-          console.log(cli.makeArt('appRebuild', {name: app.name, phase: type, warnings: app.warnings}));
+          console.log(cli.makeArt('appRebuild', { name: app.name, phase: type, warnings: app.warnings }));
           console.log('');
         });
       }

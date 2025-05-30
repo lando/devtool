@@ -1,22 +1,8 @@
-'use strict';
-
 /* eslint-disable complexity */
 /*
  * Attempts to produce a standardized error object
  */
-module.exports = ({
-  all,
-  args,
-  code,
-  command,
-  error,
-  errorCode,
-  exitCode,
-  short,
-  statusCode,
-  stdout,
-  stderr,
-}) => {
+export default function makeError({ all, args, code, command, error, errorCode, exitCode, short, statusCode, stdout, stderr }) {
   // attempt to discover various codes
   code = (error && error.code) || code || undefined;
   errorCode = (error && error.code) || errorCode || undefined;
@@ -24,9 +10,7 @@ module.exports = ({
 
   // construct a better message
   // @TODO: does this make sense?
-  short = short ||
-    (error && error.reason) ||
-    (error && error.body && error.body.error);
+  short = short || (error && error.reason) || (error && error.body && error.body.error);
   const message = [stdout, stderr].filter(Boolean).join('\n') || all;
 
   // repurpose original error if we have one
@@ -34,7 +18,7 @@ module.exports = ({
     error.originalMessage = error.message;
     error.message = message || error.originalMessage || short || stdout || stderr || all;
 
-  // otherwise begin anew
+    // otherwise begin anew
   } else {
     error = new Error(message);
   }
@@ -54,4 +38,4 @@ module.exports = ({
   // @TODO: filter out unset properties?
   // send it back
   return error;
-};
+}

@@ -1,91 +1,92 @@
 {
-  "name": "@lando/core",
-  "description": "The libraries that power all of Lando.",
-  "version": "4.0.0-unstable.6",
+  "name": "@lando/devtool",
+  "description": "A next generation development tool.",
+  "version": "4.0.0-unstable.1",
   "author": "Mike Pirog @pirog",
   "license": "GPL-3.0",
-  "repository": "lando/core-next",
-  "bugs": "https://github.com/lando/core-next/issues/new/choose",
-  "homepage": "https://github.com/lando/core-next",
+  "repository": "lando/devtool",
+  "bugs": "https://github.com/lando/devtool/issues/new/choose",
+  "homepage": "https://github.com/lando/devtool",
   "keywords": [
-    "lando",
-    "lando-plugin",
+    "devtool",
+    "devtool-plugin",
     "core"
   ],
+  "type": "module",
   "engines": {
-    "node": ">=18.0.0"
+    "bun": ">=1.2.0"
   },
-  "exports": {
-    "./app": "./lib/app.js",
-    "./bootstrap": "./lib/bootstrap.js",
-    "./config": "./lib/config.js",
-    "./debug": "./lib/debug.js",
-    "./file-storage": "./components/file-storage.js",
-    "./no-storage": "./components/no-storage.js",
-    "./lando": "./lib/product.js",
-    "./product": "./lib/product.js",
-    "./plugin": "./lib/plugin.js",
-    "./templator": "./lib/templator.js",
-    "./components/*": "./components/*.js",
-    "./lib/*": "./lib/*.js",
-    "./utils/*": "./utils/*.js"
-  },
-  "nyc": {
-    "include": [
-      "lib/**/*.js",
-      "recipes/**/*.js",
-      "services/**/*.js",
-      "types/**/*.js"
-    ],
-    "exclude": [
-      "test/**"
-    ],
-    "cache": true,
-    "all": true
+  "bin": {
+    "devtool": "./bin/devtool"
   },
   "scripts": {
-    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "docs:build": "VPL_MVB_VERSION=$(git describe --tags --always --abbrev=1 --match=\"v[0-9].*\") vitepress build docs",
     "docs:dev": "VPL_BASE_URL=http://localhost:5173 VPL_MVB_VERSION=$(git describe --tags --always --abbrev=1 --match=\"v[0-9].*\") vitepress dev docs",
-    "docs:mvb": "npx mvb docs",
+    "docs:mvb": "mvb docs",
     "docs:preview": "vitepress preview docs",
-    "lint": "eslint . --ext .js --ext .mjs ",
-    "test:unit": "nyc --reporter=html --reporter=text mocha --timeout 5000 test/**/*.spec.js",
-    "test:leia": "leia \"examples/**/README.md\" -c 'Destroy tests' --stdin",
-    "test": "npm run lint && npm run test:unit"
+    "format": "prettier --write .",
+    "leia": "leia \"examples/**/README.md\" -c 'Destroy tests' --stdin",
+    "lint": "eslint . --ext .cjs --ext .js --ext .mjs",
+    "pkg": "pkg --config package.json --targets node20 --options dns-result-order=ipv4first bin/lando",
+    "test": "bun run lint && && bun run unit && bun run leia",
+    "unit": "bun test --coverage"
+  },
+  "oclif": {
+    "bin": "devtool",
+    "dirname": "devtool",
+    "name": "@lando/devtool",
+    "plugins": [],
+    "hooks": {
+      "pre-config": [
+        "./hooks/test.js",
+        "./hooks/test2.js"
+      ],
+      "post-config": [
+        "./hooks/test2.js",
+        "./hooks/test.cjs"
+      ]
+    },
+    "topicSeparator": ":"
   },
   "dependencies": {
-    "@npmcli/arborist": "^6.2.9",
+    "@lando/argv": "^1.1.2",
+    "@npmcli/arborist": "^9.0.1",
+    "@oclif/core": "^4.2.10",
     "axios": "1.9.0",
-    "camelcase-keys": "^7",
+    "camelcase-keys": "^9.1.3",
     "copy-dir": "^0.4.0",
-    "dockerode": "^2.4.2",
+    "debug": "^4.4.0",
+    "dockerode": "^4.0.4",
     "fs-extra": "^11.1.1",
+    "get-package-type": "^0.1.0",
     "is-class": "^0.0.9",
-    "js-yaml": "^4.1.0",
-    "jsonfile": "^2.4.0",
+    "is-interactive": "^2.0.0",
+    "is-root": "^3.0.0",
+    "jsonfile": "^6.1.0",
     "kebabcase-keys": "^1.0.0",
-    "lodash": "^4.17.21",
-    "nanoid": "^3",
+    "lodash-es": "^4.17.21",
+    "nanoid": "^3.3.9",
     "nconf": "^0.12.0",
     "node-cache": "^4.1.1",
-    "pacote": "^15.1.3",
-    "semver": "^7.3.2",
+    "pacote": "^21.0.0",
     "slugify": "^1.6.5",
     "string-argv": "0.1.1",
+    "valid-path": "^2.1.0",
     "valid-url": "^1.0.9",
-    "vitepress": "^1.0.0-rc.42",
-    "which": "^2.0.2",
-    "yaml": "^2.1.1"
+    "which": "^5.0.0",
+    "yaml": "^2.7.0"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.16.0",
     "@lando/leia": "^1.0.0-beta.4",
     "@lando/vitepress-theme-default-plus": "^1.1.1",
-    "eslint": "^7.32.0",
-    "eslint-config-google": "^0.9.1",
-    "eslint-plugin-vue": "^8.0.3",
-    "mocha": "^11.1.0",
-    "nyc": "^15.1.0"
+    "eslint": "^8.57.1",
+    "eslint-config-prettier": "^10.1.1",
+    "eslint-import-resolver-exports": "^1.0.0-beta.5",
+    "eslint-import-resolver-typescript-bun": "^0.0.104",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.2.3",
+    "eslint-plugin-vue": "^10.0.0",
+    "prettier": "^3.5.3",
+    "vitepress": "^1.6.3"
   }
 }

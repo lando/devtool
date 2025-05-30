@@ -1,7 +1,10 @@
 name: Core Tests
 
 on:
-  pull_request:
+  # pull_request:
+  push:
+    branches:
+      - NOTNOWMA
 
 jobs:
   leia-tests:
@@ -29,30 +32,25 @@ jobs:
         #   - examples/services
         #   - examples/tooling
         lando-version:
-        # NOTE: we will want to progressively scale down the "risk" as the 3.x cli runtime 4 handling matures
+          # NOTE: we will want to progressively scale down the "risk" as the 3.x cli runtime 4 handling matures
           # - edge
           # - stable
           - 3-dev
-        node-version:
-          - '20'
         os:
           - ubuntu-24.04
 
     steps:
-
       # Install deps and cache
       # Eventually it would be great if these steps could live in a separate YAML file
       # that could be included in line to avoid code duplication
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Install node ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: ${{ matrix.node-version }}
-          registry-url: https://registry.npmjs.org
-          cache: npm
+          bun-version-file: .bun-version
       - name: Install dependencies
-        run: npm clean-install --prefer-offline --frozen-lockfile
+        run: bun install
       - name: Bundle Deps
         uses: lando/prepare-release-action@v3
         with:

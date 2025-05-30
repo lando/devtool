@@ -1,27 +1,36 @@
-name: "@lando/core"
+name: '@lando/core'
 hooks:
   app:
     init:
-      - "./hooks/test.js"
+      - './hooks/test.js'
   cli:
+    done:
+      - './hooks/cache-rebuild.js'
     init:
-      - "./hooks/test.js"
+      - './hooks/init.js'
+    init-preflight:
+      - './hooks/checks.js'
+    prerun:
+      - './hooks/prerun.js'
+    postrun:
+      - './hooks/postrun.js'
+
   product:
     init:
-      - "./hooks/test.js"
+      - './hooks/test.js'
   lando:
     init:
-      - "./hooks/test.js"
+      - './hooks/test.js'
 
 registry:
   app:
-    app: "./lib/app"
-    appfile-app: "./components/appfile-app"
-    landofile-legacy-app: "./components/legacy-app"
+    app: './lib/app'
+    appfile-app: './components/appfile-app'
+    landofile-legacy-app: './components/legacy-app'
   engine:
     # docker-colima: "./components/docker-colima"
-    docker-desktop: "./components/docker-desktop"
-    docker-engine: "./components/docker-engine"
+    docker-desktop: './components/docker-desktop'
+    docker-engine: './components/docker-engine'
     # docker-colima:
     # podman:
 
@@ -30,32 +39,35 @@ registry:
   #   docker-compose-2:
   legacy:
     services:
-      _compose: "./services/compose"
+      _compose: './services/compose'
   library:
-    config: "./lib/config"
-    debug: "./lib/debug"
-    module-loader: "./lib/module-loader"
-    plugin: "./lib/plugin"
-    templator: "./lib/templator"
+    config: './lib/config'
+    debug: './lib/debug'
+    module-loader: './lib/module-loader'
+    plugin: './lib/plugin'
+    templator: './lib/templator'
   plugin-installer:
-    docker-plugin-installer: "./components/docker-plugin-installer"
+    docker-plugin-installer: './components/docker-plugin-installer'
   product:
-    product: "./lib/product"
-    lando: "./components/lando"
+    product: './lib/product'
+    lando: './components/lando'
   storage:
-    file-storage: "./components/file-storage"
-    no-storage: "./components/no-storage"
+    file-storage: './components/file-storage'
+    no-storage: './components/no-storage'
+  # config:
+  #   yaml-schema:
+  #     import: !import PRIVACY.md
 
 tasks:
-  config: "./tasks/config"
-  destroy: "./tasks/destroy"
-  info: "./tasks/info"
-  list: "./tasks/list"
-  logs: "./tasks/logs"
-  poweroff: "./tasks/poweroff"
-  rebuild: "./tasks/rebuild"
-  restart: "./tasks/restart"
-  share: "./tasks/share"
-  start: "./tasks/start"
-  stop: "./tasks/stop"
-  version: "./tasks/version"
+  config: './tasks/config'
+  destroy: './tasks/destroy'
+  info: './tasks/info'
+  list: './tasks/list'
+  logs: './tasks/logs'
+  poweroff: './tasks/poweroff'
+  rebuild: './tasks/rebuild'
+  restart: './tasks/restart'
+  share: './tasks/share'
+  start: './tasks/start'
+  stop: './tasks/stop'
+  version: './tasks/version'

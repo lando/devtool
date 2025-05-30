@@ -1,0 +1,3 @@
+name = "devtool"
+entrypoint = "bin/devtool.js"
+test-dir = "test"

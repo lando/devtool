@@ -1,13 +1,11 @@
-'use strict';
-
 // const _ = require('lodash');
 // const utils = require('./../lib/utils');
 
-module.exports = cli => {
+export default () => {
   return {
     command: 'start',
     describe: 'starts your app',
-    run: async (options, {context, debug, lando, minapp}) => {
+    run: async (options, { debug }) => {
       // console.log(lando);
       debug('hello');
 
@@ -18,7 +16,7 @@ module.exports = cli => {
       // lets get a runHook implementation here?
       // lets add in some basics like start/getInfo/getStatus etc
       // different status checks?
-        // can build
+      // can build
 
       // file storage with an update command?
 
@@ -32,7 +30,6 @@ module.exports = cli => {
       // const LegacyApp = minapp.getComponent('app.legacy-app');
       // console.log(new LegacyApp(minapp));
       // process.exit(1);
-
 
       // // Try to get our app
       // const app = lando.getApp(options._app.root);

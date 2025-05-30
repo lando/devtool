@@ -1,0 +1,56 @@
+name: PR Slim Release Tests
+
+on:
+  # pull_request:
+  push:
+    branches:
+      - NOTNOWMA
+
+jobs:
+  package:
+    runs-on: ${{ matrix.runner }}
+    env:
+      TERM: xterm
+    strategy:
+      fail-fast: false
+      matrix:
+        runner:
+          - macos-14
+          - ubuntu-24.04
+        os:
+          - linux
+          - macos
+          - win
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+      - name: Install dependencies
+        run: bun install --production
+      - name: Prepare Release
+        uses: lando/prepare-release-action@v3
+        with:
+          version: dev
+          sync: false
+      - name: Ensure version
+        run: node ./bin/lando version
+      - name: Package into node binary
+        uses: lando/pkg-action@v5
+        id: pkg-action
+        with:
+          entrypoint: bin/lando
+          node-version: '18'
+          os: ${{ matrix.os }}
+          options: --options dns-result-order=ipv4first
+      - name: Ensure slimcore
+        if: matrix.os == 'linux' && runner.os == 'Linux' && runner.arch == 'X64'
+        run: ./dist/@lando/cli config --path fatcore | grep false
+      - name: Ensure ipv4first
+        if: matrix.os == 'linux' && runner.os == 'Linux' && runner.arch == 'X64'
+        run: ./dist/@lando/cli config --path cli.args | grep dns-result-order=ipv4first

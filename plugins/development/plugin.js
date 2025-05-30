@@ -1,12 +1,10 @@
-'use strict';
-
-const path = require('path');
+import path from 'node:path';
 
 // @NOTE: context will be lando if global and a minapp if app
-module.exports = context => {
+export default (context) => {
   const plugin = {
     name: '@lando/development',
-    registry: {legacy: {}},
+    registry: { legacy: {} },
   };
 
   // if devmode is on then add things to the registry for use
@@ -18,8 +16,8 @@ module.exports = context => {
 
     // load helper dev tasks
     plugin.tasks = {
-      'plugins': path.resolve(__dirname, 'tasks', 'plugins'),
-      'registry': path.resolve(__dirname, 'tasks', 'registry'),
+      plugins: path.resolve(__dirname, 'tasks', 'plugins'),
+      registry: path.resolve(__dirname, 'tasks', 'registry'),
     };
   }
 

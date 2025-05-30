@@ -1,8 +1,6 @@
-'use strict';
-
 const formats = ['auto', 'inspect', 'json', 'table'];
 
-module.exports = cli => ({
+export default (cli) => ({
   command: 'config',
   describe: 'displays the lando configuration',
   options: {
@@ -21,7 +19,7 @@ module.exports = cli => ({
       string: true,
     },
   },
-  run: async (options, {ctx}) => {
+  run: async (options, { ctx }) => {
     // mods and deps
     const sortBy = require('lodash/sortBy');
     const util = require('util');
@@ -57,16 +55,16 @@ module.exports = cli => ({
 
     // if the user wants inspect format then thats next
     if (options.format === 'inspect') {
-      cli.log(util.inspect(data, {colors: process.stdout.isTTY, depth: 10, compact: true}));
+      cli.log(util.inspect(data, { colors: process.stdout.isTTY, depth: 10, compact: true }));
       return;
     }
 
     // otherwise construct some rows for tabular display
-    const rows = ctx.config.keys(data, {expandArrays: false}).map(key => {
+    const rows = ctx.config.keys(data, { expandArrays: false }).map((key) => {
       // if we have a path then we need to modify the key
       if (options.path) key = `${options.path}.${key}`;
       // start with the basics
-      const row = {key, value: ctx.config.getUncoded(key)};
+      const row = { key, value: ctx.config.getUncoded(key) };
       // also loop through and add the values from each store for use in --extended
       for (const store of Object.keys(ctx.config.stores)) {
         row[store] = ctx.config.getUncoded(`${store}:${key}`);
@@ -76,12 +74,12 @@ module.exports = cli => ({
     });
 
     // construct the column options
-    const columns = {key: {}, value: {get: row => cli.prettify(row.value)}};
+    const columns = { key: {}, value: { get: (row) => cli.prettify(row.value) } };
     // also loop through and add the values from each store for use in --extended
     // @NOTE: this will not add stores with no content
     for (const [name, store] of Object.entries(ctx.config.stores)) {
       if (Object.keys(store.store).length > 0) {
-        columns[name] = {get: row => cli.prettify(row[name]), extended: true};
+        columns[name] = { get: (row) => cli.prettify(row[name]), extended: true };
       }
     }
 

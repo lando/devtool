@@ -10,23 +10,19 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - windows-2022
+          - windows-2025
           - ubuntu-24.04
-          - macos-13
-        node-version:
-          - '20'
+          - macos-15
     steps:
-      # Install deps and cache
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Install node ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: npm
+          bun-version-file: .bun-version
       - name: Install dependencies
-        run: npm clean-install --prefer-offline --frozen-lockfile
-
-      # Run unit tests
-      - name: Run unit tests
-        run: npm run test:unit
+        run: bun install
+      - name: Lint
+        run: bun run lint
+      - name: Unit tests
+        run: bun run unit

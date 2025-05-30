@@ -1,9 +1,7 @@
-'use strict';
-
 /*
  * TBD
  */
-module.exports = data => {
+export default function getSize(data) {
   // if null or undefined return 0
   if (!data || data === null) return 0;
   // if its an array then
@@ -12,4 +10,4 @@ module.exports = data => {
   if (typeof data === 'object') return Object.keys(data).length;
   // otherwise just return the length of whatever it is
   return data.length;
-};
+}

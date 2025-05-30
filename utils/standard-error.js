@@ -1,5 +1,3 @@
-'use strict';
-
 class StandardError extends Error {
   constructor(error) {
     // if already an error then lets pass through appropriately
@@ -16,4 +14,4 @@ class StandardError extends Error {
   }
 }
 
-module.exports = StandardError;
+export default StandardError;
