@@ -4,7 +4,7 @@ import os from 'node:os';
  * prettify object data for better tabular output
  * @TODO: is it ok to assume that all data in an array will be the same type?
  */
-export default (data, { arraySeparator = ', ' } = {}) => {
+export default function prettify(data, { arraySeparator = ', ' } = {}) {
   // if undefined then just return an empty string
   if (data === undefined) return '';
 
@@ -31,4 +31,4 @@ export default (data, { arraySeparator = ', ' } = {}) => {
   }
 
   return data;
-};
+}

@@ -7,7 +7,7 @@ import jsonfile from 'jsonfile';
 import { stringify as stringifyYAML } from 'yaml';
 const { writeFileSync: writeJSON } = jsonfile;
 
-const write = (file, data) => {
+const _write = (file, data) => {
   if (!fs.existsSync(file)) fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(file, data, { encoding: 'utf8' });
 };
@@ -15,7 +15,7 @@ const write = (file, data) => {
 // @TODO: maybe extension should be in {options}?
 // @TODO: error handling, defaults etc?
 // @TODO: better data type handling
-export default (file, data, options = {}) => {
+export default function write(file, data, options = {}) {
   // set extension if not set
   const extension = options.extension ?? path.extname(file);
   // linux line endings
@@ -47,16 +47,16 @@ export default (file, data, options = {}) => {
         // this prevents an empty doc from outputting string "null"
         const nullStr = data.contents === null ? '' : 'null';
 
-        write(file, data.toString({ nullStr, ...options }));
+        _write(file, data.toString({ nullStr, ...options }));
         break;
       }
 
       // if this is a YAML DOC th en use yaml module
-      write(file, stringifyYAML(data, options));
+      _write(file, stringifyYAML(data, options));
       break;
     }
 
     default:
-      write(file, data);
+      _write(file, data);
   }
-};
+}

@@ -11,7 +11,7 @@ const env = getEnvironment();
 
 // @TODO: this needs to use getPlatform()?
 
-export default (id = 'devtool') => {
+export default function getSystemDataDir(id = 'devtool') {
   switch (getPlatform()) {
     case 'darwin':
       return path.join('/', 'Library', 'Application Support', `${id[0].toUpperCase()}${id.slice(1).toLowerCase()}`);
@@ -21,4 +21,4 @@ export default (id = 'devtool') => {
     case 'win32':
       return path.join(env.PROGRAMDATA ?? env.ProgramData, `${id[0].toUpperCase()}${id.slice(1).toLowerCase()}`);
   }
-};
+}

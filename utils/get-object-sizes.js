@@ -8,7 +8,7 @@ import getSize from './get-size.js';
 /*
  * TBD
  */
-export default (data, { depth = 1, sizes = {} } = {}) => {
+export default function getObjectSize(data, { depth = 1, sizes = {} } = {}) {
   // @TODO: implement depth?
   // @TODO: throw error if data is not object?
   if (!isObject(data)) return {};
@@ -16,4 +16,4 @@ export default (data, { depth = 1, sizes = {} } = {}) => {
   for (const path of getKeys(data, { depth, expandArrays: false })) set(sizes, path, getSize(get(data, path)));
   // return sizes
   return sizes;
-};
+}

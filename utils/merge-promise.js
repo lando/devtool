@@ -4,7 +4,7 @@ const descriptors = ['then', 'catch', 'finally'].map((property) => [
   Reflect.getOwnPropertyDescriptor(nativePromisePrototype, property),
 ]);
 
-export default (thing, promise) => {
+export default function mergePromise(thing, promise) {
   for (const [property, descriptor] of descriptors) {
     const value =
       typeof promise === 'function' ? (...args) => Reflect.apply(descriptor.value, promise(), args) : descriptor.value.bind(promise);
@@ -12,4 +12,4 @@ export default (thing, promise) => {
   }
 
   return thing;
-};
+}

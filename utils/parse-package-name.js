@@ -3,7 +3,7 @@ import npmPkgArg from 'npm-package-arg';
 /*
  * TBD
  */
-export default (plugin /* { /*defaultTag = 'stable' } = {}*/) => {
+export default function parsePkgName(plugin /* { /*defaultTag = 'stable' } = {}*/) {
   // parse the plugin
   const result = npmPkgArg(plugin);
 
@@ -15,4 +15,4 @@ export default (plugin /* { /*defaultTag = 'stable' } = {}*/) => {
 
   // return
   return result;
-};
+}

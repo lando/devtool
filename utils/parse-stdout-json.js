@@ -7,7 +7,7 @@ import { execSync } from 'child_process';
  * @param {object} [options] - Any execSync options (cwd, env, etc).
  * @returns {any} - The parsed JSON result.
  */
-export default function runJson(cmd, options = {}) {
+export default function parseStdOut(cmd, options = {}) {
   const stdout = execSync(cmd, {
     maxBuffer: 10 * 1024 * 1024, // 10 MB
     encoding: 'utf-8',

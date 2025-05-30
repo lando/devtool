@@ -9,11 +9,11 @@ import DPlugin from '../lib/plugin.js';
 /*
  * TBD
  */
-export default (
+export default function getPlugins(
   sources = [],
   options = {},
   { debug = createDebug('@lando/core:get-plugins'), Config = DConfig, Plugin = DPlugin } = {},
-) => {
+) {
   // @TODO: error handling?
   // normalize plugins and sort by weight if applicable?
   sources = sources
@@ -86,4 +86,4 @@ export default (
 
   // return
   return plugins;
-};
+}

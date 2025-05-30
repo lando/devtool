@@ -6,9 +6,9 @@ import range from 'lodash-es/range.js';
 /*
  * TBD
  */
-export default (files, startsFrom) => {
+export default function traverseUp(files, startsFrom) {
   return range(startsFrom.split(path.sep).length)
     .map((end) => dropRight(startsFrom.split(path.sep), end).join(path.sep))
     .map((dir) => files.map((file) => path.join(dir, path.basename(file))))
     .flat(Number.POSITIVE_INFINITY);
-};
+}

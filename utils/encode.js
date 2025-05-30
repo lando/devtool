@@ -2,7 +2,7 @@ import encodeKeys from './encode-keys.js';
 import kebabCase from 'lodash-es/kebabCase.js';
 
 // @TODO: throw error for nully values?
-export default (data) => {
+export default function encode(data) {
   // if we have a nully value then just return
   if (data === null || data === undefined) return data;
   // if string then return
@@ -21,4 +21,4 @@ export default (data) => {
     );
   // else assume object and return, ignore keys in plugin format
   return encodeKeys(data);
-};
+}

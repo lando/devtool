@@ -4,7 +4,7 @@ import load from './module-loader.js';
 /*
  * TBD
  */
-export default async (event, data, hooks = [], context = {}, debug = createDebug('devtool:run-hooks'), errorHandler) => {
+export default async function runHook(event, data, hooks = [], context = {}, debug = createDebug('devtool:run-hooks'), errorHandler) {
   // debugger
   debug = debug.extend(`hook:${event}`);
   // collect successes and failures
@@ -52,4 +52,4 @@ export default async (event, data, hooks = [], context = {}, debug = createDebug
 
   // otherwise
   return final;
-};
+}

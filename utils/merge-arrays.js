@@ -2,7 +2,7 @@ import isObject from 'lodash-es/isPlainObject.js';
 import merge from 'lodash-es/merge.js';
 
 // @TODO: error handling
-export default (a, b, ams = 'replace') => {
+export default function mergeArrays(a, b, ams = 'replace') {
   // get strat and id if applicable
   const strategy = ams.split(':')[0];
   const by = ams.split(':')[1] || 'id';
@@ -39,4 +39,4 @@ export default (a, b, ams = 'replace') => {
     default:
       return merge(a, b);
   }
-};
+}

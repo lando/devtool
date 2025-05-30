@@ -2,7 +2,7 @@
 /*
  * Attempts to produce a standardized error object
  */
-export default ({ all, args, code, command, error, errorCode, exitCode, short, statusCode, stdout, stderr }) => {
+export default function makeError({ all, args, code, command, error, errorCode, exitCode, short, statusCode, stdout, stderr }) {
   // attempt to discover various codes
   code = (error && error.code) || code || undefined;
   errorCode = (error && error.code) || errorCode || undefined;
@@ -38,4 +38,4 @@ export default ({ all, args, code, command, error, errorCode, exitCode, short, s
   // @TODO: filter out unset properties?
   // send it back
   return error;
-};
+}

@@ -8,9 +8,9 @@ import { parse as readYAML, parseDocument as readYAMLDoc } from 'yaml';
 const readCJS = createRequire(import.meta.url);
 const { readFileSync: readJSON } = jsonfile;
 
-const read = (file) => fs.readFileSync(file, { encoding: 'utf8' });
+const _read = (file) => fs.readFileSync(file, { encoding: 'utf8' });
 
-export default (file, options = {}) => {
+export default function read(file, options = {}) {
   // @TODO: file does nto exist?
 
   // set extension if not set
@@ -37,10 +37,10 @@ export default (file, options = {}) => {
     case '.yml':
     case 'yaml':
     case 'yml': {
-      return fullYamlDoc ? readYAMLDoc(read(file), options) : readYAML(read(file), options);
+      return fullYamlDoc ? readYAMLDoc(_read(file), options) : readYAML(_read(file), options);
     }
 
     default:
-      return read(file);
+      return _read(file);
   }
-};
+}

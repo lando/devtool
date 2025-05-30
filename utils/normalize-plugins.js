@@ -1,7 +1,7 @@
 /*
  * Takes an object or array of plugins and standarizes them for strcuture and content
  */
-export default (plugins, by = 'name') => {
+export default function normalizePlugins(plugins, by = 'name') {
   // if its an array then map to an object
   if (Array.isArray(plugins)) {
     return Object.fromEntries(plugins.map((plugin) => [plugin[by], plugin]));
@@ -11,4 +11,4 @@ export default (plugins, by = 'name') => {
   // @TODO: what about an object?
   // @TODO: other conditions?
   return plugins;
-};
+}

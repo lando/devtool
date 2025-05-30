@@ -7,7 +7,7 @@ import getKeys from './get-object-keys.js';
 
 const defaultPathyKeys = ['hooks', 'registry', 'tasks'];
 
-export default (data = {}, base, pathyKeys = defaultPathyKeys) => {
+export default function normalizeManifestPaths(data = {}, base, pathyKeys = defaultPathyKeys) {
   // @TODO: error handling?
 
   for (const key of getKeys(data)) {
@@ -22,4 +22,4 @@ export default (data = {}, base, pathyKeys = defaultPathyKeys) => {
 
   // then return
   return data;
-};
+}

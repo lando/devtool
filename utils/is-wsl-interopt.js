@@ -4,7 +4,7 @@ import os from 'node:os';
 const WINBIN_REGEX = /\/mnt\/.\/WINDOWS\/System32$/i;
 
 // Checks to see if Docker is installed via WSL/Windows interop.
-export default () => {
+export default function isWSLInteropt() {
   // if not linux then easy
   if (os.platform() !== 'linux') return false;
   // return anything that is not wsl as false
@@ -18,4 +18,4 @@ export default () => {
   if (winbin.length === 0) return false;
   // otherwise return whether our first match exists
   return fs.existsSync(winbin[0]);
-};
+}

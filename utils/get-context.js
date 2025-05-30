@@ -6,7 +6,7 @@ const env = getEnvironment();
 /*
  * TBD
  */
-export default () => {
+export default function getContext() {
   // running on a remote development option
   if (env.GITPOD_WORKSPACE_ID || env.CODESPACES) return 'remote';
   // running on a remote linux server
@@ -15,4 +15,4 @@ export default () => {
   if (env.CI) return 'ci';
   // running locally
   return 'local';
-};
+}

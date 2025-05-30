@@ -16,7 +16,7 @@ import traverseUp from './traverse-up.js';
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
-export default (id = 'devtool') => {
+export default function getDefaultConfig(id = 'devtool') {
   // compute some system things
   const home = os.homedir();
   const baseDir = path.join(home, `.${id}`);
@@ -108,4 +108,4 @@ export default (id = 'devtool') => {
       // enavled?
     },
   };
-};
+}

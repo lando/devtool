@@ -7,8 +7,9 @@ import path from 'node:path';
  * NOTE: we are using something like this mostly just for bootstrapping eg
  * we want it to have minimal deps eg no LODASH or GLOB
  */
-export default (dir) =>
-  fs
+export default function readDirAbsolute(dir) {
+  return fs
     .readdirSync(dir)
     .map((file) => path.join(dir, file))
     .filter((file) => fs.statSync(file).isDirectory());
+}

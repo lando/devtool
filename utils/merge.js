@@ -1,9 +1,9 @@
 import isObject from 'lodash-es/isPlainObject.js';
-import merge from 'lodash-es/merge.js';
+import lomerge from 'lodash-es/merge.js';
 import mergeArrays from './merge-arrays.js';
 
 // @TODO: error handling
-export default (object, sources, ams = ['merge:id', 'replace']) => {
+export default function merge(object, sources, ams = ['merge:id', 'replace']) {
   // if sources is not an array then make it so
   if (!Array.isArray(sources)) sources = [sources];
 
@@ -15,7 +15,7 @@ export default (object, sources, ams = ['merge:id', 'replace']) => {
   const fallback = ams[1] || 'replace';
 
   // then return the merge
-  return merge(object, ...sources, (objValue, srcValue) => {
+  return lomerge(object, ...sources, (objValue, srcValue) => {
     // if not an arrayjust proceed normally
     if (!Array.isArray(objValue)) return undefined;
     // if first strategy is replace then also proceed normally
@@ -30,4 +30,4 @@ export default (object, sources, ams = ['merge:id', 'replace']) => {
     // if we get here then just pass it through to mergeArrays
     return mergeArrays(objValue, srcValue, first);
   });
-};
+}

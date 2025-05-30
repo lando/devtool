@@ -36,6 +36,6 @@ const macosCacheDir = (product) => {
   return platform === 'darwin' ? path.join(getOClifHome(), 'Library', 'Caches', product) : undefined;
 };
 
-export default (product = 'devtool') => {
+export default function getCacheDir(product = 'devtool') {
   return env[`${product.toUpperCase()}_CACHE_DIR`] ?? macosCacheDir(product) ?? getOClifBase(product);
-};
+}
