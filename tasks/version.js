@@ -1,8 +1,6 @@
-'use strict';
-
 const formats = ['auto', 'inspect', 'json', 'table'];
 
-module.exports = cli => ({
+export default (cli) => ({
   command: 'version',
   describe: 'displays lando version information',
   options: {
@@ -31,18 +29,18 @@ module.exports = cli => ({
       type: 'boolean',
     },
   },
-  run: async (options, {ctx}) => {
+  run: async (options, { ctx }) => {
     const util = require('util');
 
     // lets just start with the CLI version
     const plugins = ctx.getPlugins();
-    let data = {'@lando/cli': `v${ctx.config.get('system.version')}`};
+    let data = { '@lando/cli': `v${ctx.config.get('system.version')}` };
 
     // if all then add in all the plugin data
     if (options.all) for (const [name, plugin] of Object.entries(plugins)) data[name] = plugin.version;
     // if we are looking for a different component than cli
     if (options.component && (options.component !== 'cli' || options.compoent !== '@lando/cli')) {
-      const componentKey = Object.keys(plugins).find(name => name === options.component || name === `@lando/${options.component}`);
+      const componentKey = Object.keys(plugins).find((name) => name === options.component || name === `@lando/${options.component}`);
       // throw error if cannot find component
       if (!componentKey) {
         cli.exitError(`Could not find a component named: "${options.component}"`, {
@@ -51,7 +49,7 @@ module.exports = cli => ({
         });
       }
       // set the data
-      data = {[componentKey]: `v${plugins[componentKey].version}`};
+      data = { [componentKey]: `v${plugins[componentKey].version}` };
     }
     // if we only are looking for one thing and want short then just value
     if (options.short && Object.keys(data).length === 1) data = Object.values(data)[0];
@@ -64,7 +62,7 @@ module.exports = cli => ({
 
     // if the user wants inspect format then thats next
     if (options.format === 'inspect') {
-      cli.log(util.inspect(data, {colors: process.stdout.isTTY, depth: 10, compact: true}));
+      cli.log(util.inspect(data, { colors: process.stdout.isTTY, depth: 10, compact: true }));
       return;
     }
 
@@ -83,9 +81,9 @@ module.exports = cli => ({
 
     // otherwise we should print a table
     // if we have selected all then just print them all in a table
-    const rows = Object.entries(data).map(([name, version]) => ({name, version: `v${version}`}));
+    const rows = Object.entries(data).map(([name, version]) => ({ name, version: `v${version}` }));
     cli.log();
-    cli.ux.ux.table(rows, {name: {}, version: {}});
+    cli.ux.ux.table(rows, { name: {}, version: {} });
     cli.log();
   },
 });

@@ -43,8 +43,12 @@ module.exports = {
   },
   settings: {
     'import/resolver': {
-      exports: true,
-      node: true,
+      'typescript-bun': {
+        project: true,
+        alwaysTryTypes: true,
+      },
+      'exports': true,
+      'node': true,
     },
   },
 };

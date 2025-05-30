@@ -22,13 +22,14 @@
   "scripts": {
     "docs:build": "VPL_MVB_VERSION=$(git describe --tags --always --abbrev=1 --match=\"v[0-9].*\") vitepress build docs",
     "docs:dev": "VPL_BASE_URL=http://localhost:5173 VPL_MVB_VERSION=$(git describe --tags --always --abbrev=1 --match=\"v[0-9].*\") vitepress dev docs",
-    "docs:mvb": "npx mvb docs",
+    "docs:mvb": "mvb docs",
     "docs:preview": "vitepress preview docs",
     "format": "prettier --write .",
+    "leia": "leia \"examples/**/README.md\" -c 'Destroy tests' --stdin",
     "lint": "eslint . --ext .cjs --ext .js --ext .mjs",
     "pkg": "pkg --config package.json --targets node20 --options dns-result-order=ipv4first bin/lando",
-    "test:leia": "leia \"examples/**/README.md\" -c 'Destroy tests' --stdin",
-    "test": "npm run lint && npm run test:unit"
+    "test": "bun run lint && && bun run unit && bun run leia",
+    "unit": "bun test"
   },
   "oclif": {
     "bin": "devtool",
@@ -47,28 +48,12 @@
     },
     "topicSeparator": ":"
   },
-  "pkg": {
-    "outputPath": "dist",
-    "scripts": [
-      "bin/*.js",
-      "config/**/*.js",
-      "hooks/**/*.js",
-      "lib/**/*.js",
-      "utils/**/*.js"
-    ],
-    "assets": [
-      "config.yml",
-      "package.json",
-      "config/test.yaml",
-      "config/user.yaml"
-    ]
-  },
   "dependencies": {
     "@lando/argv": "^1.1.2",
     "@npmcli/arborist": "^9.0.1",
     "@oclif/core": "^4.2.10",
-    "camelcase-keys": "^9.1.3",
     "axios": "1.9.0",
+    "camelcase-keys": "^9.1.3",
     "copy-dir": "^0.4.0",
     "debug": "^4.4.0",
     "dockerode": "^4.0.4",
@@ -84,7 +69,6 @@
     "nconf": "^0.12.0",
     "node-cache": "^4.1.1",
     "pacote": "^21.0.0",
-    "semver": "^7.3.2",
     "slugify": "^1.6.5",
     "string-argv": "0.1.1",
     "valid-path": "^2.1.0",
@@ -98,6 +82,7 @@
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.1",
     "eslint-import-resolver-exports": "^1.0.0-beta.5",
+    "eslint-import-resolver-typescript-bun": "^0.0.104",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-vue": "^10.0.0",

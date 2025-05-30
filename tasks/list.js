@@ -1,9 +1,7 @@
-'use strict';
-
 // Modules
-const _ = require('lodash');
+import _ from 'lodash-es';
 
-module.exports = cli => {
+export default (cli, lando) => {
   return {
     command: 'list',
     describe: 'Lists all running lando apps and containers',
@@ -19,16 +17,23 @@ module.exports = cli => {
     //     string: true,
     //   },
     // }),
-    run: options => {
+    run: (options) => {
       // List all the apps
-      return lando.engine.list(options)
-      // Map each app to a summary and print results
-      .then(containers => console.log(cli.formatData(
-        _(containers)
-          .map(container => _.omit(container, ['lando', 'id', 'instance']))
-          .value(),
-        options,
-      )));
+      return (
+        lando.engine
+          .list(options)
+          // Map each app to a summary and print results
+          .then((containers) =>
+            console.log(
+              cli.formatData(
+                _(containers)
+                  .map((container) => _.omit(container, ['lando', 'id', 'instance']))
+                  .value(),
+                options,
+              ),
+            ),
+          )
+      );
     },
   };
 };

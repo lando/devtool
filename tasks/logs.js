@@ -1,8 +1,6 @@
-'use strict';
+import _ from 'lodash-es';
 
-const _ = require('lodash');
-
-module.exports = cli => ({
+export default (lando) => ({
   command: 'logs',
   describe: 'Displays logs for your app',
   options: {
@@ -24,11 +22,11 @@ module.exports = cli => ({
       boolean: true,
     },
   },
-  run: options => {
+  run: (options) => {
     // Try to get our app
     const app = lando.getApp(options._app.root);
     const opts = _.pick(options, ['follow', 'timestamps', 'service']);
     opts.services = opts.service;
-    if (app) return app.init().then(() => lando.engine.logs(_.merge(app, {opts})));
+    if (app) return app.init().then(() => lando.engine.logs(_.merge(app, { opts })));
   },
 });

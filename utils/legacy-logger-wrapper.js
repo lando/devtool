@@ -1,7 +1,7 @@
-'use strict';
+import createDebug from '../lib/debug.js';
 
 // @TODO: figure a better default value for legacy-logger?
-module.exports = (debug = require('../lib/debug')('legacy-logger')) => ({
+export default (debug = createDebug('legacy-logger')) => ({
   error: (...args) => {
     const log = debug.extend('error');
     log(...args);

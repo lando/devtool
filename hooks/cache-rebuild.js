@@ -1,7 +1,5 @@
-'use strict';
-
-module.exports = async ({cli, debug}) => {
-  const {app, context, product} = cli;
+export default async ({ cli, debug }) => {
+  const { app, context, product } = cli;
 
   // reinit product syscache if caching is on
   if (product.config.get('core.caching')) {

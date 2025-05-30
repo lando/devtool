@@ -1,11 +1,12 @@
-'use strict';
+import fs from 'node:fs';
+import path from 'node:path';
 
-const fs = require('fs');
-const path = require('path');
+import isDocker from 'is-docker';
+import isRoot from 'is-root';
 
-module.exports = async ({cli, debug}) => {
+export default async ({ cli, debug }) => {
   // get the main things
-  const {arch, bin, cacheDir, platform} = cli.product.config.get('system');
+  const { arch, bin, cacheDir, platform } = cli.product.config.get('system');
   const uid = process.getuid ? process.getuid() : '-1';
   const env = process.pkg ? 'prod' : 'dev';
 
@@ -55,14 +56,11 @@ module.exports = async ({cli, debug}) => {
   }
 
   // check user
-  if (require('is-root')() && !require('is-docker')()) {
+  if (isRoot() && !isDocker()) {
     const error = new Error(`${bin} cannot be run as root!`);
     error.code = 'LNOROOT';
     error.ref = 'https://docs.lando.dev/requirements';
-    error.suggestions = [
-      `Run ${bin} as a non-root user eg uid != 0`,
-      'Read https://docs.lando.dev/requirements',
-    ];
+    error.suggestions = [`Run ${bin} as a non-root user eg uid != 0`, 'Read https://docs.lando.dev/requirements'];
     throw error;
   }
 

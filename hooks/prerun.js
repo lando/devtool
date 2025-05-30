@@ -1,9 +1,6 @@
-// const formatters = require('./../lib/formatters');
-'use strict';
-
-module.exports = async ({id, data, cli, debug, task}) => {
-  await cli.runHook('pretask', {id, data, cli});
-  await cli.runHook(`pretask-${id}`, {data, task, cli});
+export default async ({ id, data, cli, debug, task }) => {
+  await cli.runHook('pretask', { id, data, cli });
+  await cli.runHook(`pretask-${id}`, { data, task, cli });
 
   // run the interactive prompts
   debug('attempting interactive prompts...');
@@ -11,5 +8,5 @@ module.exports = async ({id, data, cli, debug, task}) => {
   // @TODO: formatters.handleInteractive is too deeply lando 3
   // @TODO: we need to replace these with stuff from new handle interactive ^?
 
-  await cli.runHook(id, {id, data});
+  await cli.runHook(id, { id, data });
 };

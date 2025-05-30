@@ -1,18 +1,19 @@
-'use strict';
+import createDebug from '../lib/debug.js';
+import fs from 'node:fs';
+import has from 'lodash-es/has';
+import isObject from 'lodash-es/isPlainObject';
+import merge from './merge.js';
 
-const fs = require('fs');
-const has = require('lodash/has');
-const isObject = require('lodash/isPlainObject');
-const merge = require('./merge');
+import Config from '../lib/config.js';
 
 /*
  * TBD
  */
-module.exports = (
+export default function getComponent(
   component,
-  registry = (registry = new require('../lib/config')({ id: 'component-registry' })), // eslint-disable-line new-cap
-  { aliases = {}, config = {}, cache = undefined, debug = require('../lib/debug')('@lando/core:get-component') } = {},
-) => {
+  registry = (registry = new Config({ id: 'component-registry' })), // eslint-disable-line new-cap
+  { aliases = {}, config = {}, cache = undefined, debug = createDebug('@lando/core:get-component') } = {},
+) {
   // determine whether we should cache or not
   const shouldCache = isObject(cache);
 
@@ -25,7 +26,7 @@ module.exports = (
   debug('looking for %o in %o', component, registry.id);
 
   // if an alias then rerun
-  if (has(aliases, component)) return module.exports(aliases[component], registry, { aliases, config, cache, debug });
+  if (has(aliases, component)) return getComponent(aliases[component], registry, { aliases, config, cache, debug });
 
   // if class is already loaded in registry and cache is true then just return the class
   if (shouldCache && cache[component]) {
@@ -54,7 +55,7 @@ module.exports = (
   // whatever core.engine is
   //
   // otherwise assume the loader is the class itself
-  const Component = isDynamic ? loader.getComponent(module.exports(loader.extends, registry, { alises, cache, config, debug })) : loader;
+  const Component = isDynamic ? loader.getComponent(getComponent(loader.extends, registry, { aliases, cache, config, debug })) : loader;
 
   // if Component is not a class then error
   if (!require('is-class')(Component)) throw new Error(`component ${component} needs to be a class`);
@@ -72,4 +73,4 @@ module.exports = (
   debug('retrieved component %o from %o', component, registry.id);
 
   return Component;
-};
+}

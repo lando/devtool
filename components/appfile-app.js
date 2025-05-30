@@ -1,11 +1,8 @@
-'use strict';
-
-const fs = require('fs');
-const get = require('lodash/get');
-const path = require('path');
-const slugify = require('slugify');
-
-const App = require('../lib/app');
+import fs from 'node:fs';
+import path from 'node:path';
+import get from 'lodash-es/get';
+import slugify from 'slugify';
+import App from '../lib/app.js';
 
 class AppfileApp extends App {
   static debug = require('../lib/debug')('@lando/core:appfile-app');
@@ -98,14 +95,11 @@ class AppfileApp extends App {
     const repoDir = path.join(root, `.${prod}`);
 
     // get resolved list of appfiles to load
-    const appfiles = AppfileApp.getAppfiles(
-      get(mainfileData, 'config.core.appfiles', config.get('core.appfiles') || ['']),
-      {
-        base: path.dirname(appfile),
-        ext: appfile.split('.').pop(),
-        file: path.basename(appfile, `.${appfile.split('.').pop()}`),
-      },
-    );
+    const appfiles = AppfileApp.getAppfiles(get(mainfileData, 'config.core.appfiles', config.get('core.appfiles') || ['']), {
+      base: path.dirname(appfile),
+      ext: appfile.split('.').pop(),
+      file: path.basename(appfile, `.${appfile.split('.').pop()}`),
+    });
 
     // build the app config
     const appConfig = config.newConfig({ managed: 'main', id: name, debug: debug.extend('config') });
@@ -118,10 +112,7 @@ class AppfileApp extends App {
 
     // add standard plugin directory for a cli api and normalize all to root
     // @TODO: should this be something else? pluginDirs is a "legacy" key
-    appConfig.set('plugin-dirs', [
-      ...appConfig.get('plugin-dirs').map((dir) => path.resolve(root, dir)),
-      path.join(repoDir, 'plugins'),
-    ]);
+    appConfig.set('plugin-dirs', [...appConfig.get('plugin-dirs').map((dir) => path.resolve(root, dir)), path.join(repoDir, 'plugins')]);
     // similarly path normalize any plugins in appconfig that are local
     appConfig.set(
       'plugins',
@@ -148,4 +139,4 @@ class AppfileApp extends App {
   }
 }
 
-module.exports = AppfileApp;
+export default AppfileApp;

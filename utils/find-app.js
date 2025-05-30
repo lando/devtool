@@ -1,6 +1,6 @@
-'use strict';
+import fs from 'node:fs';
+import traverseUp from './traverse-up.js';
 
-const fs = require('fs');
-const traverseUp = require('./traverse-up');
-
-module.exports = (files, startFrom) => traverseUp(files, startFrom).find(file => fs.existsSync(file));
+export default function findApp(files, startFrom) {
+  return traverseUp(files, startFrom).find((file) => fs.existsSync(file));
+}

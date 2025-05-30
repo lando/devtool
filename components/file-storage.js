@@ -160,11 +160,11 @@ class FileStorage extends NodeCache {
 
     // Unsafe cache key patterns
     const patterns = {
-      controlRe: /[\x00-\x1f\x80-\x9f]/g,
-      illegalRe: /[\/\?<>\\:\*\|":]/g,
+      controlRe: /[\x00-\x1f\x80-\x9f]/g, // eslint-disable-line no-control-regex
+      illegalRe: /[\/\?<>\\:\*\|":]/g, // eslint-disable-line no-useless-escape
       reservedRe: /^\.+$/,
       windowsReservedRe: /^(con|prn|aux|nul|com[0-9]|lpt[0-9])(\..*)?$/i,
-      windowsTrailingRe: /[\. ]+$/,
+      windowsTrailingRe: /[\. ]+$/, // eslint-disable-line no-useless-escape
     };
     for (const pattern of Object.values(patterns)) {
       if (key.match(pattern)) throw new Error(`Invalid file-storage key: ${key}`);

@@ -1,4 +1,6 @@
+/* eslint-disable import/no-commonjs */
 // const formatters = require('./../lib/formatters');
+
 'use strict';
 
 module.exports = async (thing) => {

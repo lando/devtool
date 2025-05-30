@@ -1,8 +1,10 @@
-'use strict';
+import { customAlphabet } from 'nanoid';
 
-const {customAlphabet} = require('nanoid');
 const nanoid = customAlphabet('1234567890abcdefl', 17);
+
 /*
  * TBD
  */
-module.exports = () => nanoid();
+export default function generateId() {
+  return nanoid();
+}

@@ -1,8 +1,6 @@
-'use strict';
-
-const fs = require('fs');
-const path = require('path');
-const readdirSyncAbsDir = require('./readdir-absolute');
+import fs from 'node:fs';
+import path from 'node:path';
+import readdirSyncAbsDir from './readdir-absolute.js';
 
 /*
  * Recurses through directories to given depth looking for plugins
@@ -11,7 +9,7 @@ const readdirSyncAbsDir = require('./readdir-absolute');
  * we want it to have minimal deps eg no LODASH or GLOB
  */
 // @TODO: make pConfigFiles configurable?
-module.exports = (dir, depth = 1) => {
+export default function findPlugins(dir, depth = 1) {
   // if dir doesnt exist then return []
   if (!fs.existsSync(dir)) return [];
 
@@ -20,16 +18,19 @@ module.exports = (dir, depth = 1) => {
   // list of files that indicate we have a plugin
   const pConfigFiles = ['plugin.js', 'plugin.yaml', 'plugin.yml', 'package.json'];
   // rescurse through dirs until we are good
-  return dirs.map(dir => {
-    // return if path contains a plugin
-    if (pConfigFiles.some(file => fs.existsSync(path.join(dir, file)))) return dir;
-    // otherwise recurse if depth allows
-    if (depth > 1) return module.exports(dir, depth - 1);
-    // otherwise null
-    return null;
-  })
-  // flatten
-  .flat(Number.POSITIVE_INFINITY)
-  // remove nully
-  .filter(dir => dir);
-};
+  return (
+    dirs
+      .map((dir) => {
+        // return if path contains a plugin
+        if (pConfigFiles.some((file) => fs.existsSync(path.join(dir, file)))) return dir;
+        // otherwise recurse if depth allows
+        if (depth > 1) return findPlugins(dir, depth - 1);
+        // otherwise null
+        return null;
+      })
+      // flatten
+      .flat(Number.POSITIVE_INFINITY)
+      // remove nully
+      .filter((dir) => dir)
+  );
+}

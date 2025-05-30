@@ -1,12 +1,10 @@
-'use strict';
-
-const os = require('os');
+import os from 'node:os';
 
 /*
  * prettify object data for better tabular output
  * @TODO: is it ok to assume that all data in an array will be the same type?
  */
-module.exports = (data, {arraySeparator = ', '} = {}) => {
+export default (data, { arraySeparator = ', ' } = {}) => {
   // if undefined then just return an empty string
   if (data === undefined) return '';
 
@@ -19,15 +17,18 @@ module.exports = (data, {arraySeparator = ', '} = {}) => {
 
     // print arrays of objects nicely
     if (data[0] && typeof data[0] === 'object' && Object.keys(data[0]).length > 0) {
-      return data.map(item => {
-        // if it doesnt have keys just return
-        if (typeof item !== 'object') return item;
-        // otherwise
-        return Object.keys(item).map(key => `${key}: ${item[key]}`).join(', ');
-      }).join(os.EOL);
+      return data
+        .map((item) => {
+          // if it doesnt have keys just return
+          if (typeof item !== 'object') return item;
+          // otherwise
+          return Object.keys(item)
+            .map((key) => `${key}: ${item[key]}`)
+            .join(', ');
+        })
+        .join(os.EOL);
     }
   }
 
   return data;
 };
-
