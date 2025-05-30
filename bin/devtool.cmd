@@ -1,3 +1,3 @@
 @echo off
 
-node "%~dp0\devtool" %*
+bun "%~dp0\devtool" %*
