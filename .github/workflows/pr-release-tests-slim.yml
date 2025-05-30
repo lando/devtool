@@ -1,7 +1,10 @@
 name: PR Slim Release Tests
 
 on:
-  pull_request:
+  # pull_request:
+  push:
+    branches:
+      - NOTNOWMA
 
 jobs:
   package:

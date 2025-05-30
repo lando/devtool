@@ -1,7 +1,10 @@
 name: Core Tests
 
 on:
-  pull_request:
+  # pull_request:
+  push:
+    branches:
+      - NOTNOWMA
 
 jobs:
   leia-tests:
@@ -29,7 +32,7 @@ jobs:
         #   - examples/services
         #   - examples/tooling
         lando-version:
-        # NOTE: we will want to progressively scale down the "risk" as the 3.x cli runtime 4 handling matures
+          # NOTE: we will want to progressively scale down the "risk" as the 3.x cli runtime 4 handling matures
           # - edge
           # - stable
           - 3-dev
@@ -37,7 +40,6 @@ jobs:
           - ubuntu-24.04
 
     steps:
-
       # Install deps and cache
       # Eventually it would be great if these steps could live in a separate YAML file
       # that could be included in line to avoid code duplication

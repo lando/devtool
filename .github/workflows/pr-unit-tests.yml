@@ -10,11 +10,10 @@ jobs:
       fail-fast: false
       matrix:
         os:
-          - windows-2022
+          - windows-2025
           - ubuntu-24.04
-          - macos-13
+          - macos-15
     steps:
-      # Install deps and cache
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Install Bun
@@ -23,7 +22,7 @@ jobs:
           bun-version-file: .bun-version
       - name: Install dependencies
         run: bun install
-
-      # Run unit tests
-      - name: Run unit tests
-        run: bun run test:unit
+      - name: Lint
+        run: bun run lint
+      - name: Unit tests
+        run: bun run unit
