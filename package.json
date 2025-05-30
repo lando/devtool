@@ -14,7 +14,7 @@
   ],
   "type": "module",
   "engines": {
-    "node": ">=20.0.0"
+    "bun": ">=1.2.0"
   },
   "bin": {
     "devtool": "./bin/devtool"
@@ -25,7 +25,7 @@
     "docs:mvb": "npx mvb docs",
     "docs:preview": "vitepress preview docs",
     "format": "prettier --write .",
-    "lint": "eslint . --ext .cjs --ext .js --ext .mjs --ext .ts",
+    "lint": "eslint . --ext .cjs --ext .js --ext .mjs",
     "pkg": "pkg --config package.json --targets node20 --options dns-result-order=ipv4first bin/lando",
     "test:leia": "leia \"examples/**/README.md\" -c 'Destroy tests' --stdin",
     "test": "npm run lint && npm run test:unit"
@@ -95,12 +95,9 @@
   "devDependencies": {
     "@lando/leia": "^1.0.0-beta.4",
     "@lando/vitepress-theme-default-plus": "^1.1.1",
-    "@typescript-eslint/eslint-plugin": "^8.26.1",
-    "@typescript-eslint/parser": "^8.26.1",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^10.1.1",
     "eslint-import-resolver-exports": "^1.0.0-beta.5",
-    "eslint-import-resolver-typescript": "^3.8.7",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.2.3",
     "eslint-plugin-vue": "^10.0.0",

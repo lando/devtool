@@ -1,19 +1,16 @@
 /* eslint-disable import/no-commonjs */
 module.exports = {
   root: true,
-  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2022,
-    project: './tsconfig.json',
     sourceType: 'module',
-    tsconfigRootDir: process.cwd(),
   },
   env: {
     node: true,
     mocha: true,
     es2022: true,
   },
-  plugins: ['@typescript-eslint', 'import', 'prettier'],
+  plugins: ['import', 'prettier'],
   extends: [
     'eslint:recommended',
     'plugin:import/recommended',
@@ -21,7 +18,6 @@ module.exports = {
     // 'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'plugin:import/errors',
     'plugin:import/warnings',
-    'plugin:import/typescript',
     'plugin:prettier/recommended',
     'plugin:vue/recommended',
   ],
@@ -45,19 +41,10 @@ module.exports = {
     // // Optional: strict null rules
     // '@typescript-eslint/strict-boolean-expressions': 'warn',
   },
-  overrides: [
-    {
-      files: ['*.js'],
-      rules: {
-        '@typescript-eslint/no-var-requires': 'off',
-      },
-    },
-  ],
   settings: {
     'import/resolver': {
       exports: true,
       node: true,
-      typescript: true,
     },
   },
 };
