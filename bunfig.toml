@@ -1,3 +1,7 @@
 name = "devtool"
 entrypoint = "bin/devtool.js"
 test-dir = "test"
+
+[test]
+coverage = true
+coverageSkipTestFiles = true
