@@ -1,7 +1,10 @@
-/*
- * TBD
- */
 import os from 'node:os';
+
+/**
+ * Determine the current operating system platform.
+ *
+ * @returns {string} Platform identifier (`darwin`, `linux`, `win32`, or `wsl`).
+ */
 
 export default function getPlatform() {
   // wsl check

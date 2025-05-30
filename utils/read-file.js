@@ -10,6 +10,15 @@ const { readFileSync: readJSON } = jsonfile;
 
 const _read = (file) => fs.readFileSync(file, { encoding: 'utf8' });
 
+/**
+ * Read a file and automatically parse based on extension.
+ *
+ * @param {string} file - File path to read.
+ * @param {object} [options]
+ * @param {string} [options.extension] - File extension override.
+ * @param {boolean} [options.fullYamlDoc=false] - Return full YAML document.
+ * @returns {*} Parsed file contents.
+ */
 export default function read(file, options = {}) {
   // @TODO: file does nto exist?
 

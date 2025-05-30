@@ -1,6 +1,20 @@
 /* eslint-disable complexity */
-/*
- * Attempts to produce a standardized error object
+/**
+ * Construct a standardized Error object from command output.
+ *
+ * @param {object} params - Command results and meta data.
+ * @param {string} [params.all] - Combined stdout/stderr.
+ * @param {string[]} [params.args]
+ * @param {string} [params.code]
+ * @param {string} [params.command]
+ * @param {Error} [params.error]
+ * @param {string} [params.errorCode]
+ * @param {number} [params.exitCode]
+ * @param {string} [params.short]
+ * @param {number} [params.statusCode]
+ * @param {string} [params.stdout]
+ * @param {string} [params.stderr]
+ * @returns {Error} Normalized error instance.
  */
 export default function makeError({ all, args, code, command, error, errorCode, exitCode, short, statusCode, stdout, stderr }) {
   // attempt to discover various codes

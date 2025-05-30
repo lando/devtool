@@ -6,8 +6,16 @@ import normalizePlugins from './normalize-plugins.js';
 import DConfig from '../lib/config.js';
 import DPlugin from '../lib/plugin.js';
 
-/*
- * TBD
+/**
+ * Discover and load plugins from various directories.
+ *
+ * @param {Array} [sources=[]] - Source directories or objects.
+ * @param {object} [options] - Options forwarded to Plugin constructors.
+ * @param {object} [deps] - Dependency injection overrides.
+ * @param {Function} [deps.debug] - Debug creator.
+ * @param {typeof DConfig} [deps.Config] - Config class.
+ * @param {typeof DPlugin} [deps.Plugin] - Plugin class.
+ * @returns {object} Categorized plugins {enabled, disabled, invalids}.
  */
 export default function getPlugins(
   sources = [],

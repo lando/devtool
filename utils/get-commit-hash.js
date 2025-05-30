@@ -1,6 +1,15 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
+/**
+ * Retrieve a git commit hash from a repository directory.
+ *
+ * @param {string} dir - Path to the git repository.
+ * @param {object} [options]
+ * @param {string} [options.refFile] - Path to the ref file to read.
+ * @param {boolean} [options.short=false] - Whether to return the short hash.
+ * @returns {string|false} The commit hash or `false` if it cannot be found.
+ */
 export default function getCommitHash(dir, { refFile = path.join(dir, '.git', 'HEAD'), short = false } = {}) {
   // if reffile doesnt exist then return false
   if (!fs.existsSync(refFile)) return false;

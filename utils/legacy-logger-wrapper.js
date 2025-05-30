@@ -1,5 +1,11 @@
 import createDebug from '../lib/debug.js';
 
+/**
+ * Wrap a debug instance with methods shaped like a legacy logger.
+ *
+ * @param {Function} [debug=createDebug('legacy-logger')] - Debug creator.
+ * @returns {object} Logger with log-level methods.
+ */
 // @TODO: figure a better default value for legacy-logger?
 export default function legacyLogWrapper(debug = createDebug('legacy-logger')) {
   return {

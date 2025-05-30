@@ -1,5 +1,9 @@
-/*
- * Takes an object or array of plugins and standarizes them for strcuture and content
+/**
+ * Normalize plugin definitions into an object keyed by a property.
+ *
+ * @param {object[]|object} plugins - Plugins list or map.
+ * @param {string} [by='name'] - Key to index array entries by.
+ * @returns {object} Normalized plugin map.
  */
 export default function normalizePlugins(plugins, by = 'name') {
   // if its an array then map to an object

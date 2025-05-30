@@ -7,6 +7,14 @@ import getKeys from './get-object-keys.js';
 
 const defaultPathyKeys = ['hooks', 'registry', 'tasks'];
 
+/**
+ * Resolve relative paths within a manifest to absolute paths.
+ *
+ * @param {object} [data={}] - Manifest object.
+ * @param {string} base - Base directory to resolve from.
+ * @param {string[]} [pathyKeys=defaultPathyKeys] - Keys that contain paths.
+ * @returns {object} The mutated manifest.
+ */
 export default function normalizeManifestPaths(data = {}, base, pathyKeys = defaultPathyKeys) {
   // @TODO: error handling?
 

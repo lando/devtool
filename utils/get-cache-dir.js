@@ -36,6 +36,12 @@ const macosCacheDir = (product) => {
   return platform === 'darwin' ? path.join(getOClifHome(), 'Library', 'Caches', product) : undefined;
 };
 
+/**
+ * Determine the cache directory for the given product.
+ *
+ * @param {string} [product='devtool'] - Product identifier used to compute the directory.
+ * @returns {string} The cache directory path.
+ */
 export default function getCacheDir(product = 'devtool') {
   return env[`${product.toUpperCase()}_CACHE_DIR`] ?? macosCacheDir(product) ?? getOClifBase(product);
 }
