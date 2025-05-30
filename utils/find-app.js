@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+
 import traverseUp from './traverse-up.js';
 
 export default function findApp(files, startFrom) {

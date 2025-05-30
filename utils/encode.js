@@ -1,5 +1,6 @@
-import encodeKeys from './encode-keys.js';
 import kebabCase from 'lodash-es/kebabCase.js';
+
+import encodeKeys from './encode-keys.js';
 
 // @TODO: throw error for nully values?
 export default function encode(data) {

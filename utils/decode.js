@@ -1,4 +1,4 @@
-import camelCase from 'lodash-es/camelCase';
+import camelCase from 'lodash-es/camelCase.js';
 import camelcaseKeys from 'camelcase-keys';
 
 // @TODO: throw error for nully values?

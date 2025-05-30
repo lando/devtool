@@ -1,9 +1,9 @@
-import createDebug from '../lib/debug.js';
 import fs from 'node:fs';
-import has from 'lodash-es/has';
-import isObject from 'lodash-es/isPlainObject';
+import has from 'lodash-es/has.js';
+import isObject from 'lodash-es/isPlainObject.js';
 import merge from './merge.js';
 
+import createDebug from '../lib/debug.js';
 import Config from '../lib/config.js';
 
 /*
