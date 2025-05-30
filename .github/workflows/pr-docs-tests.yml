@@ -1,7 +1,10 @@
 name: Run Docs Tests
 
 on:
-  pull_request:
+  # pull_request:
+  push:
+    branches:
+      - NOTNOWMA
 
 jobs:
   docs-tests:
