@@ -34,7 +34,7 @@ jobs:
           # - stable
           - 3-dev
         node-version:
-          - '20'
+          - '1.2'
         os:
           - ubuntu-24.04
 
@@ -45,14 +45,12 @@ jobs:
       # that could be included in line to avoid code duplication
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Install node ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: ${{ matrix.node-version }}
-          registry-url: https://registry.npmjs.org
-          cache: npm
+          bun-version: ${{ matrix.node-version }}
       - name: Install dependencies
-        run: npm clean-install --prefer-offline --frozen-lockfile
+        run: bun install
       - name: Bundle Deps
         uses: lando/prepare-release-action@v3
         with:

@@ -1,4 +1,4 @@
-#!/usr/bin/env node --dns-result-order=ipv4first
+#!/usr/bin/env bun
 
 /**
  * devtool

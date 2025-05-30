@@ -15,7 +15,7 @@ jobs:
           - macos-14
           - ubuntu-24.04
         node-version:
-          - '18'
+          - '1.2'
         os:
           - linux
           - macos
@@ -26,13 +26,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Install node ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: ${{ matrix.node-version }}
-          cache: npm
+          bun-version: ${{ matrix.node-version }}
       - name: Install dependencies
-        run: npm clean-install --prefer-offline --frozen-lockfile --production
+        run: bun install --production
       - name: Prepare Release
         uses: lando/prepare-release-action@v3
         with:
