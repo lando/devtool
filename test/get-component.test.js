@@ -6,7 +6,7 @@ import getComponent from '../utils/get-component.js';
 import Config from '../lib/config.js';
 
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'gcomp-'));
-const compFile = path.join(dir, 'comp.js');
+const compFile = path.join(dir, 'component-1.test.js');
 fs.writeFileSync(compFile, `export default class Test {}`);
 
 const registry = new Config({ id: 'reg', data: { test: compFile } });
