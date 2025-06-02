@@ -18,7 +18,7 @@ describe('get-cache-dir', () => {
       expect(getCacheDir('foo')).toBe(path.join(cacheDir, 'foo'));
     } else {
       const cacheDir = process.env.XDG_CACHE_HOME ?? process.env.HOME;
-      expect(getCacheDir('foo')).toBe(path.join(cacheDir, 'foo'));
+      expect(getCacheDir('foo')).toBe(path.join(cacheDir, '.cache', 'foo'));
     }
   });
 });
