@@ -14,7 +14,7 @@
   ],
   "type": "module",
   "engines": {
-    "bun": ">=1.2.0"
+    "bun": ">=1.2.15"
   },
   "bin": {
     "devtool": "./bin/devtool"

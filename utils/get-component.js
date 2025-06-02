@@ -1,4 +1,6 @@
 import fs from 'node:fs';
+import isClass from 'is-class';
+
 import has from 'lodash-es/has.js';
 import isObject from 'lodash-es/isPlainObject.js';
 import merge from './merge.js';
@@ -64,10 +66,12 @@ export default function getComponent(
   // whatever core.engine is
   //
   // otherwise assume the loader is the class itself
-  const Component = isDynamic ? loader.getComponent(getComponent(loader.extends, registry, { aliases, cache, config, debug })) : loader;
+  const Component = isDynamic
+    ? loader.getComponent(getComponent(loader.extends, registry, { aliases, cache, config, debug }))
+    : (loader.default ?? loader);
 
   // if Component is not a class then error
-  if (!require('is-class')(Component)) throw new Error(`component ${component} needs to be a class`);
+  if (!isClass(Component)) throw new Error(`component ${component} needs to be a class`);
 
   // mix in some config
   Component.config = merge({}, [Component.config, config]);

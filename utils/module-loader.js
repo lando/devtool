@@ -32,12 +32,9 @@ async function load(file) {
   try {
     ({ file, isESM } = await resolvePath(file));
 
-    // if not esm then just return the require
-    if (!isESM) return { file, isESM, module: require(file) };
+    const module = isESM ? await import(url.pathToFileURL(file).href) : require(file);
 
-    // otherwise return the default esm export
-    const { default: module } = await import(url.pathToFileURL(file).href);
-    return { file, isESM, module };
+    return { file, isESM, module: module.default ?? module };
   } catch (error) {
     handleError(error, isESM, file);
   }
@@ -58,13 +55,16 @@ function isPathModule(filePath) {
     case '.js':
     case '.jsx':
     case '.ts':
-    case '.tsx':
+    case '.tsx': {
       return getPackageType.sync(filePath) === 'module';
+    }
     case '.mjs':
-    case '.mts':
+    case '.mts': {
       return true;
-    default:
+    }
+    default: {
       return false;
+    }
   }
 }
 
