@@ -1,5 +1,6 @@
 import { describe, test, expect } from 'bun:test';
 import os from 'os';
+
 import getPlatform from '../utils/get-platform.js';
 
 describe('get-platform', () => {
