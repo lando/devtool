@@ -37,7 +37,6 @@ jobs:
           - devtool-windows-x64-${{ github.sha }}
           - devtool-linux-arm64-${{ github.sha }}
           - devtool-macos-arm64-${{ github.sha }}
-
     with:
       download-pattern: packaged-devtool-*
       file: ${{ matrix.file }}

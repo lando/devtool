@@ -24,25 +24,25 @@ on:
         default:
     secrets:
       certificate-data:
-        description: "A `base64` encoded string of your `p12` or `pfx` cert contents."
+        description: 'A `base64` encoded string of your `p12` or `pfx` cert contents.'
         required: true
       certificate-password:
-        description: "The password to unlock the certificate-data"
+        description: 'The password to unlock the certificate-data'
         required: true
       apple-notary-password:
-        description: "The Apple Developer account password to use in notarization"
+        description: 'The Apple Developer account password to use in notarization'
         required: false
       apple-notary-user:
-        description: "The Apple Developer account email to use in notarization"
+        description: 'The Apple Developer account email to use in notarization'
         required: false
       keylocker-api-key:
-        description: "The API key to use for KeyLocker"
+        description: 'The API key to use for KeyLocker'
         required: false
       keylocker-cert-sha1-hash:
-        description: "The SHA1 hash of the certificate to use for KeyLocker"
+        description: 'The SHA1 hash of the certificate to use for KeyLocker'
         required: false
       keylocker-keypair-alias:
-        description: "The alias of the keypair to use for KeyLocker"
+        description: 'The alias of the keypair to use for KeyLocker'
         required: false
 
 jobs:
@@ -66,6 +66,10 @@ jobs:
           merge-multiple: true
           path: /tmp/sign/${{ github.sha }}
           pattern: ${{ inputs.download-pattern }}
+
+      - name: Create paths
+        run: ls -lsa /tmp/sign/${{ github.sha }}
+
       - name: Sign and Notarize
         id: code-sign-action
         if: runner.os == 'macOS' || runner.os == 'Windows'
