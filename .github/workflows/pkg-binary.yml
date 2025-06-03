@@ -57,15 +57,31 @@ jobs:
         id: pkg-action
         shell: bash
         run: |
-          bun build bin/devtool.js --compile --outfile dist/${{ inputs.filename }} --minify --target bun-${{ inputs.target }}
-          echo "file=${{ inputs.filename }}" >> $GITHUB_OUTPUT
+          #  bun build
+          bun build bin/devtool.js \
+            --outfile dist/${{ inputs.filename }} \
+            --target bun-${{ inputs.target }} \
+            --compile \
+            --minify \
+            --sourcemap
+
+          # determine outfile with ext based on target
+          if [[ "${{ inputs.target }}" == windows-* ]]; then
+            outfile="dist/${{ inputs.filename }}.exe"
+          else
+            outfile="dist/${{ inputs.filename }}"
+          fi
+
+
+          # set outputs
           echo "artifact-key=packaged-${{ inputs.filename }}-${{ inputs.target }}-${{ github.sha }}" >> $GITHUB_OUTPUT
+          echo "file=$outfile" >> $GITHUB_OUTPUT
 
       - name: Ensure runs
         if: runner.os == 'linux' && inputs.target == 'linux-x64'
         run: |
-          chmod +x ./dist/${{ inputs.filename }}
-          ./dist/${{ inputs.filename }}
+          chmod +x ./${{ steps.pkg-action.outputs.file }}
+          ./${{ steps.pkg-action.outputs.file }}
 
       # @NOTE: rework these verification steps when we are more advanced?
       # - name: Ensure version

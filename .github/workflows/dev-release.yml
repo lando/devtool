@@ -34,12 +34,12 @@ jobs:
         file:
           - devtool-linux-x64-${{ github.sha }}
           - devtool-macos-x64-${{ github.sha }}
-          - devtool-win-x64-${{ github.sha }}
+          - devtool-windows-x64-${{ github.sha }}
           - devtool-linux-arm64-${{ github.sha }}
           - devtool-macos-arm64-${{ github.sha }}
 
     with:
-      download-pattern: packaged-dev-*
+      download-pattern: packaged-devtool-*
       file: ${{ matrix.file }}
     secrets:
       apple-notary-user: ${{ secrets.APPLE_NOTARY_USER }}
