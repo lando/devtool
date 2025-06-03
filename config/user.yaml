@@ -1,12 +1,11 @@
-# core:
-#   debug: false
-#   engine: docker-desktop
-#   id: hyperdrive
-#   lando: lando-cli
-#   product: hyperdrive
-#   release-channel: stable
-#   telemetry: true
-
+core:
+  #   debug: false
+  #   engine: docker-desktop
+  #   id: hyperdrive
+  #   lando: lando-cli
+  #   product: hyperdrive
+  #   telemetry: true
+  release-channel: stable
 #   # this will force hyperdrive to use updated config from lando on every run. normally hyperdrive will use a
 #   # cached config that is generated on every lando run for version/plugin/config information.
 #   # you can use the hidden `lando --hyperdrive` command to regenerate this file.

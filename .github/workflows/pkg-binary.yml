@@ -3,9 +3,9 @@ name: Package Binary
 on:
   workflow_call:
     inputs:
-      arch:
-        default: x64
-        description: The architecture to build for eg x64 | arm64
+      target:
+        default: linux-x64
+        description: The bun target to build for eg darwin-arm64
         required: true
         type: string
       edge:
@@ -14,19 +14,9 @@ on:
         required: false
         type: boolean
       filename:
-        default: lando
+        default: devtool
         description: The name of the resulting binary
         required: false
-        type: string
-      node-version:
-        default: '20'
-        description: The node version to build for eg 16 | 18 | 20
-        required: true
-        type: string
-      os:
-        default: linux
-        description: The os to build for eg linux | macos | win
-        required: true
         type: string
       version:
         default: dev
@@ -36,7 +26,7 @@ on:
 
 jobs:
   pkg-binary:
-    runs-on: ${{ inputs.arch == 'arm64' && 'macos-14' || 'ubuntu-24.04' }}
+    runs-on: 'ubuntu-24.04'
     env:
       TERM: xterm
     steps:
@@ -44,46 +34,59 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Install node ${{ inputs.node-version }}
-        uses: actions/setup-node@v4
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: ${{ inputs.node-version }}
-          cache: npm
-      - name: Install dependencies
-        run: npm clean-install --prefer-offline --frozen-lockfile --production
-      - name: Install plugins
-        run: scripts/install-plugins.sh --lando bin/lando ${{ inputs.edge == true && '--edge' || '' }}
+          bun-version-file: .bun-version
+      - name: Install production dependencies
+        run: bun install --production --frozen-lockfile
+      # @NOTE: unsure whether we will need this or not yet
+      # - name: Install plugins
+      #   run: scripts/install-plugins.sh --lando bin/lando ${{ inputs.edge == true && '--edge' || '' }}
       - name: Switch to edge channel
         if: inputs.edge == true
         run: |
-          sed -i.bak "s/^channel: stable/channel: edge/" config.yml
-          rm -rf config.yml.bak
+          sed -i.bak "s/^release-channel: stable/release-channel: edge/" config/user.yaml
+          rm -rf config/user.yaml.bak
       - name: Prepare Release
         uses: lando/prepare-release-action@v3
         with:
           version: ${{ inputs.version }}
           sync: false
       - name: Package into binary
-        uses: lando/pkg-action@v6
-        with:
-          entrypoint: bin/lando
-          filename: ${{ inputs.filename }}
-          node-version: ${{ inputs.node-version }}
-          os: ${{ inputs.os }}
-          options: --options dns-result-order=ipv4first
-          pkg: '@yao-pkg/pkg@5.16.1'
-          upload-key: 'packaged-${{ inputs.filename }}-${{ inputs.os }}-${{ inputs.arch }}-${{ github.sha }}'
-      - name: Ensure version
-        if: (inputs.os == 'linux' && runner.os == 'Linux') || (inputs.os == 'macos' && runner.os == 'macOS')
-        run: ./dist/${{ inputs.filename }} version --all
-      - name: Ensure ipv4first
-        if: (inputs.os == 'linux' && runner.os == 'Linux') || (inputs.os == 'macos' && runner.os == 'macOS')
-        run: ./dist/${{ inputs.filename }} config --path cli.args | grep dns-result-order=ipv4first
-      - name: Ensure channel
-        if: (inputs.os == 'linux' && runner.os == 'Linux') || (inputs.os == 'macos' && runner.os == 'macOS')
-        run: ./dist/${{ inputs.filename }} config --path channel | grep ${{ inputs.edge == true && 'edge' || 'stable' }}
-      - name: Ensure plugin install
-        if: ((inputs.os == 'linux' && runner.os == 'Linux') || (inputs.os == 'macos' && runner.os == 'macOS'))
+        id: pkg-action
+        shell: bash
         run: |
-          ./dist/${{ inputs.filename }} config --path fatcore | grep true
-          ./dist/${{ inputs.filename }} config | grep -q "/snapshot/core/plugins/wordpress"
+          bun build bin/devtool.js --compile --outfile dist/${{ inputs.filename }} --minify --target bun-${{ inputs.target }}
+          echo "file=${{ inputs.filename }}" >> $GITHUB_OUTPUT
+          echo "artifact-key=packaged-${{ inputs.filename }}-${{ inputs.target }}-${{ github.sha }}" >> $GITHUB_OUTPUT
+
+      - name: Ensure runs
+        if: runner.os == 'linux' && inputs.target == 'linux-x64'
+        run: |
+          chmod +x ./dist/${{ inputs.filename }}
+          ./dist/${{ inputs.filename }}
+
+      # @NOTE: rework these verification steps when we are more advanced?
+      # - name: Ensure version
+      #   if: (inputs.os == 'linux' && runner.os == 'Linux') || (inputs.os == 'macos' && runner.os == 'macOS')
+      #   run: ./dist/${{ inputs.filename }} version --all
+      # - name: Ensure ipv4first
+      #   if: (inputs.os == 'linux' && runner.os == 'Linux') || (inputs.os == 'macos' && runner.os == 'macOS')
+      #   run: ./dist/${{ inputs.filename }} config --path cli.args | grep dns-result-order=ipv4first
+      # - name: Ensure channel
+      #   if: (inputs.os == 'linux' && runner.os == 'Linux') || (inputs.os == 'macos' && runner.os == 'macOS')
+      #   run: ./dist/${{ inputs.filename }} config --path channel | grep ${{ inputs.edge == true && 'edge' || 'stable' }}
+      # - name: Ensure plugin install
+      #   if: ((inputs.os == 'linux' && runner.os == 'Linux') || (inputs.os == 'macos' && runner.os == 'macOS'))
+      #   run: |
+      #     ./dist/${{ inputs.filename }} config --path fatcore | grep true
+      #     ./dist/${{ inputs.filename }} config | grep -q "/snapshot/core/plugins/wordpress"
+
+      - name: Upload ${{ steps.pkg-action.outputs.artifact-key }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.pkg-action.outputs.artifact-key }}
+          path: ${{ steps.pkg-action.outputs.file }}
+          if-no-files-found: error
+          retention-days: 1
