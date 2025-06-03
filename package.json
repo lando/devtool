@@ -1,7 +1,7 @@
 {
   "name": "@lando/devtool",
   "description": "A next generation development tool.",
-  "version": "4.0.0-unstable.1",
+  "version": "4.0.0-unstable.0",
   "author": "Mike Pirog @pirog",
   "license": "GPL-3.0",
   "repository": "lando/devtool",
