@@ -3,6 +3,14 @@ import lomerge from 'lodash-es/merge.js';
 import mergeArrays from './merge-arrays.js';
 
 // @TODO: error handling
+/**
+ * Deep merge objects with special array handling strategies.
+ *
+ * @param {object} object - Destination object.
+ * @param {object|object[]} sources - Sources to merge from.
+ * @param {string|string[]} [ams=['merge:id','replace']] - Array merge strategies.
+ * @returns {object} The merged object.
+ */
 export default function merge(object, sources, ams = ['merge:id', 'replace']) {
   // if sources is not an array then make it so
   if (!Array.isArray(sources)) sources = [sources];

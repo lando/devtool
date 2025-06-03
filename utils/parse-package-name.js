@@ -1,7 +1,10 @@
 import npmPkgArg from 'npm-package-arg';
 
-/*
- * TBD
+/**
+ * Parse an npm package specifier and augment its result.
+ *
+ * @param {string} plugin - Package specifier string.
+ * @returns {import('npm-package-arg').Result} Parsed result with additional fields.
  */
 export default function parsePkgName(plugin /* { /*defaultTag = 'stable' } = {}*/) {
   // parse the plugin

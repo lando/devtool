@@ -2,6 +2,14 @@ import isObject from 'lodash-es/isPlainObject.js';
 import merge from 'lodash-es/merge.js';
 
 // @TODO: error handling
+/**
+ * Merge two arrays using a variety of strategies.
+ *
+ * @param {Array} a - Base array.
+ * @param {Array} b - Array to merge into `a`.
+ * @param {string} [ams='replace'] - Strategy string, e.g. 'merge:id'.
+ * @returns {Array} The merged array.
+ */
 export default function mergeArrays(a, b, ams = 'replace') {
   // get strat and id if applicable
   const strategy = ams.split(':')[0];

@@ -5,8 +5,11 @@ import getPlatform from './get-platform.js';
 
 const env = getEnvironment();
 
-/*
- * TBD
+/**
+ * Compute a platform-specific system data directory for the product.
+ *
+ * @param {string} [id='devtool'] - Product identifier.
+ * @returns {string|undefined} The data directory path.
  */
 
 // @TODO: this needs to use getPlatform()?

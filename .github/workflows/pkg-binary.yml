@@ -1,0 +1,92 @@
+name: Package Binary
+
+on:
+  workflow_call:
+    inputs:
+      target:
+        default: linux-x64
+        description: The bun target to build for eg darwin-arm64
+        required: true
+        type: string
+      edge:
+        default: false
+        description: Whether to build on the edge channel or not
+        required: false
+        type: boolean
+      filename:
+        default: devtool
+        description: The name of the resulting binary
+        required: false
+        type: string
+      version:
+        default: dev
+        description: The version to bump the package.json to
+        required: true
+        type: string
+
+jobs:
+  pkg-binary:
+    runs-on: 'ubuntu-24.04'
+    env:
+      TERM: xterm
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: .bun-version
+      - name: Install production dependencies
+        run: bun install --production --frozen-lockfile
+      # @NOTE: unsure whether we will need this or not yet
+      # - name: Install plugins
+      #   run: scripts/install-plugins.sh --lando bin/lando ${{ inputs.edge == true && '--edge' || '' }}
+      - name: Switch to edge channel
+        if: inputs.edge == true
+        run: |
+          sed -i.bak "s/^release-channel: stable/release-channel: edge/" config/user.yaml
+          rm -rf config/user.yaml.bak
+      - name: Prepare Release
+        uses: lando/prepare-release-action@v3
+        with:
+          version: ${{ inputs.version }}
+          sync: false
+      - name: Package into binary
+        id: pkg-action
+        shell: bash
+        run: |
+          bun build bin/devtool.js --compile --outfile dist/${{ inputs.filename }} --minify --target bun-${{ inputs.target }}
+          echo "file=${{ inputs.filename }}" >> $GITHUB_OUTPUT
+          echo "artifact-key=packaged-${{ inputs.filename }}-${{ inputs.target }}-${{ github.sha }}" >> $GITHUB_OUTPUT
+
+      - name: Ensure runs
+        if: runner.os == 'linux' && inputs.target == 'linux-x64'
+        run: |
+          chmod +x ./dist/${{ inputs.filename }}
+          ./dist/${{ inputs.filename }}
+
+      # @NOTE: rework these verification steps when we are more advanced?
+      # - name: Ensure version
+      #   if: (inputs.os == 'linux' && runner.os == 'Linux') || (inputs.os == 'macos' && runner.os == 'macOS')
+      #   run: ./dist/${{ inputs.filename }} version --all
+      # - name: Ensure ipv4first
+      #   if: (inputs.os == 'linux' && runner.os == 'Linux') || (inputs.os == 'macos' && runner.os == 'macOS')
+      #   run: ./dist/${{ inputs.filename }} config --path cli.args | grep dns-result-order=ipv4first
+      # - name: Ensure channel
+      #   if: (inputs.os == 'linux' && runner.os == 'Linux') || (inputs.os == 'macos' && runner.os == 'macOS')
+      #   run: ./dist/${{ inputs.filename }} config --path channel | grep ${{ inputs.edge == true && 'edge' || 'stable' }}
+      # - name: Ensure plugin install
+      #   if: ((inputs.os == 'linux' && runner.os == 'Linux') || (inputs.os == 'macos' && runner.os == 'macOS'))
+      #   run: |
+      #     ./dist/${{ inputs.filename }} config --path fatcore | grep true
+      #     ./dist/${{ inputs.filename }} config | grep -q "/snapshot/core/plugins/wordpress"
+
+      - name: Upload ${{ steps.pkg-action.outputs.artifact-key }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.pkg-action.outputs.artifact-key }}
+          path: ${{ steps.pkg-action.outputs.file }}
+          if-no-files-found: error
+          retention-days: 1

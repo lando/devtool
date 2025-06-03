@@ -1,6 +1,12 @@
-/*
- * Returns an array of all keys, nested or otherwise, as "." separated paths but does not expand arrays
- * @TODO: implement depth? this is needed for upstream things like get-object-size?
+/**
+ * Return all object keys as dot-separated paths.
+ *
+ * @param {object} data - Object to extract keys from.
+ * @param {object} [options]
+ * @param {string} [options.prefix=''] - Prefix for the returned keys.
+ * @param {boolean} [options.expandArrays=true] - Include array indexes.
+ * @param {string} [options.separator='.'] - Path separator.
+ * @returns {string[]} Array of key paths.
  */
 function getObjectKeys(data, { prefix = '', expandArrays = true, separator = '.' } = {}) {
   return Object.keys(data).reduce((keys, key) => {

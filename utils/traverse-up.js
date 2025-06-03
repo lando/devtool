@@ -3,8 +3,12 @@ import path from 'node:path';
 import dropRight from 'lodash-es/dropRight.js';
 import range from 'lodash-es/range.js';
 
-/*
- * TBD
+/**
+ * Generate upward file paths from a starting directory.
+ *
+ * @param {string[]} files - File names to append at each level.
+ * @param {string} startsFrom - Initial directory path.
+ * @returns {string[]} Array of candidate file paths.
  */
 export default function traverseUp(files, startsFrom) {
   return range(startsFrom.split(path.sep).length)

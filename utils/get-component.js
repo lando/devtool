@@ -1,13 +1,24 @@
-import createDebug from '../lib/debug.js';
 import fs from 'node:fs';
-import has from 'lodash-es/has';
-import isObject from 'lodash-es/isPlainObject';
+import isClass from 'is-class';
+
+import has from 'lodash-es/has.js';
+import isObject from 'lodash-es/isPlainObject.js';
 import merge from './merge.js';
 
+import createDebug from '../lib/debug.js';
 import Config from '../lib/config.js';
 
-/*
- * TBD
+/**
+ * Resolve and load a component class from a registry.
+ *
+ * @param {string} component - Component id to load.
+ * @param {Config} [registry] - Component registry.
+ * @param {object} [options]
+ * @param {object} [options.aliases] - Mapping of aliases to component ids.
+ * @param {object} [options.config] - Configuration to merge into the class.
+ * @param {object} [options.cache] - Object used to cache loaded classes.
+ * @param {Function} [options.debug] - Debug logger factory.
+ * @returns {Function} Loaded component class.
  */
 export default function getComponent(
   component,
@@ -55,10 +66,12 @@ export default function getComponent(
   // whatever core.engine is
   //
   // otherwise assume the loader is the class itself
-  const Component = isDynamic ? loader.getComponent(getComponent(loader.extends, registry, { aliases, cache, config, debug })) : loader;
+  const Component = isDynamic
+    ? loader.getComponent(getComponent(loader.extends, registry, { aliases, cache, config, debug }))
+    : (loader.default ?? loader);
 
   // if Component is not a class then error
-  if (!require('is-class')(Component)) throw new Error(`component ${component} needs to be a class`);
+  if (!isClass(Component)) throw new Error(`component ${component} needs to be a class`);
 
   // mix in some config
   Component.config = merge({}, [Component.config, config]);

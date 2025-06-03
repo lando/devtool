@@ -16,6 +16,12 @@ import traverseUp from './traverse-up.js';
 
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
 
+/**
+ * Generate a baseline configuration object for the given product.
+ *
+ * @param {string} [id='devtool'] - Product identifier.
+ * @returns {object} Default configuration values.
+ */
 export default function getDefaultConfig(id = 'devtool') {
   // compute some system things
   const home = os.homedir();

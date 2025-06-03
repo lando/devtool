@@ -3,8 +3,20 @@ import getComponent from './get-component.js';
 
 import Config from '../lib/config.js';
 
-/*
- * TBD
+/**
+ * Instantiate a component class and optionally run its `init` method.
+ *
+ * @param {string} component - Component id or path.
+ * @param {*} constructor - Argument(s) passed to the component constructor.
+ * @param {object} [options]
+ * @param {object} [options.aliases] - Component alias map.
+ * @param {boolean} [options.cache=true] - Whether to cache loaded classes.
+ * @param {Function} [options.debug] - Debug logger factory.
+ * @param {object} [options.config] - Configuration passed to the component.
+ * @param {object} [options.defaults] - Default options passed to init.
+ * @param {boolean} [options.init=true] - Call the component `init` method.
+ * @param {Config} [options.registry] - Component registry.
+ * @returns {Promise<*>} An initialized component instance.
  */
 export default async function getComponentInstance(
   component,
