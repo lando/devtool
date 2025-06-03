@@ -20,6 +20,7 @@
     "devtool": "./bin/devtool"
   },
   "scripts": {
+    "pkg": "bun build bin/devtool.js --compile --outfile dist/devtool --minify --target bun",
     "docs:build": "VPL_MVB_VERSION=$(git describe --tags --always --abbrev=1 --match=\"v[0-9].*\") vitepress build docs",
     "docs:dev": "VPL_BASE_URL=http://localhost:5173 VPL_MVB_VERSION=$(git describe --tags --always --abbrev=1 --match=\"v[0-9].*\") vitepress dev docs",
     "docs:mvb": "mvb docs",
@@ -27,7 +28,6 @@
     "format": "prettier --write .",
     "leia": "leia \"examples/**/README.md\" -c 'Destroy tests' --stdin",
     "lint": "eslint . --ext .cjs --ext .js --ext .mjs",
-    "pkg": "pkg --config package.json --targets node20 --options dns-result-order=ipv4first bin/lando",
     "test": "bun run lint && && bun run unit && bun run leia",
     "unit": "bun test --coverage"
   },

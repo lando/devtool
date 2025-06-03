@@ -1,4 +1,4 @@
-name: Create Slim Dev Releases
+name: Create Dev Releases
 
 on:
   push:
