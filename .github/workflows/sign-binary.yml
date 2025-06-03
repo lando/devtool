@@ -50,7 +50,7 @@ jobs:
     runs-on: ${{
       (contains(inputs.os, 'linux') || contains(inputs.file, 'linux')) && 'ubuntu-24.04' ||
       (contains(inputs.os, 'macos') || contains(inputs.file, 'macos')) && 'macos-15' ||
-      (contains(inputs.os, 'windows') || contains(inputs.file, 'windows')) && 'windows-2025'}}
+      (contains(inputs.os, 'windows') || contains(inputs.file, 'windows')) && 'windows-2022'}}
     env:
       TERM: xterm
     steps:
@@ -66,13 +66,6 @@ jobs:
           merge-multiple: true
           path: /tmp/sign/${{ github.sha }}
           pattern: ${{ inputs.download-pattern }}
-
-      - name: scan paths
-        shell: bash
-        if: runner.os == 'Windows'
-        run: |
-          ls -lsa /c/tmp/sign/${{ github.sha }} || true
-
       - name: Sign and Notarize
         id: code-sign-action
         if: runner.os == 'macOS' || runner.os == 'Windows'
