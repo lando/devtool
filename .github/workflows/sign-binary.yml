@@ -67,10 +67,11 @@ jobs:
           path: /tmp/sign/${{ github.sha }}
           pattern: ${{ inputs.download-pattern }}
 
-      - name: Create paths
+      - name: scan paths
         shell: bash
+        if: runner.os == 'Windows'
         run: |
-          ls -lsa /tmp/sign/${{ github.sha }}
+          ls -lsa /c/tmp/sign/${{ github.sha }} || true
 
       - name: Sign and Notarize
         id: code-sign-action
