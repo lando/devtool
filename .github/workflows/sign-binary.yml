@@ -68,7 +68,7 @@ jobs:
           pattern: ${{ inputs.download-pattern }}
 
       - name: Create paths
-        shell: shell
+        shell: bash
         run: |
           ls -lsa /tmp/sign/${{ github.sha }}
 
