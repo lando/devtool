@@ -34,7 +34,8 @@ jobs:
         file:
           - devtool-linux-x64-${{ github.sha }}
           - devtool-macos-x64-${{ github.sha }}
-          - devtool-windows-x64-${{ github.sha }}
+          # @TODO: @reynoldsalec needs to investiage keylocker authentication failures
+          # - devtool-windows-x64-${{ github.sha }}
           - devtool-linux-arm64-${{ github.sha }}
           - devtool-macos-arm64-${{ github.sha }}
     with:
@@ -59,7 +60,7 @@ jobs:
         target:
           - linux-x64
           - macos-x64
-          - windows-x64
+          # - windows-x64
           - linux-arm64
           - macos-arm64
         alias:
@@ -79,7 +80,7 @@ jobs:
         target:
           - linux-x64
           - macos-x64
-          - windows-x64
+          # - windows-x64
           - linux-arm64
           - macos-arm64
 
