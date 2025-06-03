@@ -57,21 +57,38 @@ jobs:
         id: pkg-action
         shell: bash
         run: |
+          # standardize target for bun
+          buntarget="${{ inputs.target }}"
+          case "${{ inputs.target }}" in
+            macos-*)
+              arch="${buntarget#macos-}"
+              buntarget="darwin-${arch}"
+              ;;
+            win32-*)
+              arch="${bun_target#win32-}"
+              buntarget="windows-${arch}"
+              ;;
+            *)
+              buntarget="bun-$buntarget"
+              ;;
+          esac
+
+          echo "$buntarget"
+
           #  bun build
           bun build bin/devtool.js \
             --outfile dist/${{ inputs.filename }} \
-            --target bun-${{ inputs.target }} \
+            --target $buntarget \
             --compile \
             --minify \
             --sourcemap
 
           # determine outfile with ext based on target
-          if [[ "${{ inputs.target }}" == windows-* ]]; then
+          if [[ "$buntarget" == windows-* ]]; then
             outfile="dist/${{ inputs.filename }}.exe"
           else
             outfile="dist/${{ inputs.filename }}"
           fi
-
 
           # set outputs
           echo "artifact-key=packaged-${{ inputs.filename }}-${{ inputs.target }}-${{ github.sha }}" >> $GITHUB_OUTPUT
