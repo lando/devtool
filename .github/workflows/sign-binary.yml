@@ -49,8 +49,8 @@ jobs:
   codesign-binary:
     runs-on: ${{
       (contains(inputs.os, 'linux') || contains(inputs.file, 'linux')) && 'ubuntu-24.04' ||
-      (contains(inputs.os, 'macos') || contains(inputs.file, 'macos')) && 'macos-14' ||
-      (contains(inputs.os, 'win') || contains(inputs.file, 'win')) && 'windows-2022'}}
+      (contains(inputs.os, 'macos') || contains(inputs.file, 'macos')) && 'macos-15' ||
+      (contains(inputs.os, 'windows') || contains(inputs.file, 'windows')) && 'windows-2025'}}
     env:
       TERM: xterm
     steps:
@@ -68,7 +68,9 @@ jobs:
           pattern: ${{ inputs.download-pattern }}
 
       - name: Create paths
-        run: ls -lsa /tmp/sign/${{ github.sha }}
+        shell: shell
+        run: |
+          ls -lsa /tmp/sign/${{ github.sha }}
 
       - name: Sign and Notarize
         id: code-sign-action
