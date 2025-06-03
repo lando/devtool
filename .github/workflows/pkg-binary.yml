@@ -62,11 +62,11 @@ jobs:
           case "${{ inputs.target }}" in
             macos-*)
               arch="${buntarget#macos-}"
-              buntarget="darwin-${arch}"
+              buntarget="bun-darwin-${arch}"
               ;;
             win32-*)
               arch="${bun_target#win32-}"
-              buntarget="windows-${arch}"
+              buntarget="bun-windows-${arch}"
               ;;
             *)
               buntarget="bun-$buntarget"
@@ -84,7 +84,7 @@ jobs:
             --sourcemap
 
           # determine outfile with ext based on target
-          if [[ "$buntarget" == windows-* ]]; then
+          if [[ "$buntarget" == bun-windows-* ]]; then
             outfile="dist/${{ inputs.filename }}.exe"
           else
             outfile="dist/${{ inputs.filename }}"
