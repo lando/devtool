@@ -50,27 +50,7 @@ jobs:
       keylocker-cert-sha1-hash: ${{ secrets.KEYLOCKER_CERT_SHA1_HASH }}
       keylocker-keypair-alias: ${{ secrets.KEYLOCKER_KEYPAIR_ALIAS }}
 
-  build-release-binary-alias:
-    uses: ./.github/workflows/release-rename-binary.yml
-    needs:
-      - sign
-    strategy:
-      fail-fast: false
-      matrix:
-        target:
-          - linux-x64
-          - macos-x64
-          # - windows-x64
-          - linux-arm64
-          - macos-arm64
-        alias:
-          - dev
-          - latest
-    with:
-      source: devtool-${{ matrix.target }}-${{ github.sha }}
-      destination: devtool-${{ matrix.target }}-${{ matrix.alias }}
-      download-pattern: signed-devtool-*
-  build-release-binary-branch:
+  rename-release-binary-branch:
     uses: ./.github/workflows/release-rename-binary.yml
     needs:
       - sign
@@ -98,8 +78,7 @@ jobs:
           - dev
           - ${{ github.sha }}
     needs:
-      - build-release-binary-alias
-      - build-release-binary-branch
+      - rename-release-binary-branch
     with:
       download-pattern: release-*
       flatten: true

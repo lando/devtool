@@ -48,4 +48,19 @@ jobs:
       - name: Upload releases to S3
         shell: bash
         run: |
+          # upload assets
           aws s3 sync /tmp/deploy-s3/${{ github.sha }} s3://files.devtool.sh
+
+          # create meta convenience links so we dont have to upload multiple assets
+          for filepath in "/tmp/deploy-s3/${{ github.sha }}"/*; do
+            [[ -f "$filepath" ]] || continue
+
+            filename=$(basename "$filepath")
+
+            aws s3 cp "s3://files.devtool.sh/$filename" \
+              "s3://files.devtool.sh/${filename}-latest" \
+              --metadata-directive COPY
+            aws s3 cp "s3://files.devtool.sh/$filename" \
+              "s3://files.devtool.sh/${filename}-dev" \
+              --metadata-directive COPY
+          done
