@@ -15,13 +15,13 @@ on:
         type: string
     secrets:
       aws-access-key-id:
-        description: "The aws access key id"
+        description: 'The aws access key id'
         required: true
       aws-secret-access-key:
-        description: "The aws secret access key"
+        description: 'The aws secret access key'
         required: true
       aws-region:
-        description: "The aws region"
+        description: 'The aws region'
         required: false
 
 jobs:
@@ -48,6 +48,4 @@ jobs:
       - name: Upload releases to S3
         shell: bash
         run: |
-          aws s3 sync /tmp/deploy-s3/${{ github.sha }} s3://files.lando.dev
-          aws s3 sync /tmp/deploy-s3/${{ github.sha }} s3://files.lando.dev/cli
-          aws s3 sync /tmp/deploy-s3/${{ github.sha }} s3://files.lando.dev/core
+          aws s3 sync /tmp/deploy-s3/${{ github.sha }} s3://files.devtool.sh
