@@ -75,7 +75,7 @@ jobs:
       fail-fast: false
       matrix:
         alias:
-          - dev
+          - ${{ github.head_ref || github.ref_name }}
           - ${{ github.sha }}
     needs:
       - rename-release-binary-branch

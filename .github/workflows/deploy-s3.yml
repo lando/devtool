@@ -57,6 +57,8 @@ jobs:
 
             filename=$(basename "$filepath")
 
+            [[ $filename == devtool-* ]] || continue
+
             aws s3 cp "s3://files.devtool.sh/$filename" \
               "s3://files.devtool.sh/${filename}-latest" \
               --metadata-directive COPY
