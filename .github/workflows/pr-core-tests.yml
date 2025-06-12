@@ -1,89 +1,63 @@
-name: Core Tests
+name: Leia Tests
 
 on:
-  # pull_request:
-  push:
-    branches:
-      - NOTRIGHTNOWMA
+  pull_request:
 
 jobs:
   leia-tests:
     runs-on: ${{ matrix.os }}
     env:
       TERM: xterm
-      # DEBUG: "lando*"
-      LANDO_CORE_RUNTIME: 4
-      LANDO_CORE_DEVELOPMENT: 1
-      LANDO_CORE_TELEMETRY: 0
     strategy:
       fail-fast: false
       matrix:
-        # leia-test:
-        #   - examples/badname
-        #   - examples/base
-        #   - examples/events
-        #   - examples/keys
-        #   - examples/lando-101
-        #   - examples/landofile-custom
-        #   - examples/long-name
-        #   - examples/networking
-        #   - examples/proxy
-        #   - examples/scanner
-        #   - examples/services
-        #   - examples/tooling
-        lando-version:
-          # NOTE: we will want to progressively scale down the "risk" as the 3.x cli runtime 4 handling matures
-          # - edge
-          # - stable
-          - 3-dev
+        leia-test:
+          - trivial
         os:
+          # - macos-15
           - ubuntu-24.04
+          # - windows-2025
+        shell:
+          - bash
 
     steps:
-      # Install deps and cache
-      # Eventually it would be great if these steps could live in a separate YAML file
-      # that could be included in line to avoid code duplication
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Install Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version-file: .bun-version
-      - name: Install dependencies
-        run: bun install
       - name: Bundle Deps
         uses: lando/prepare-release-action@v3
         with:
           lando-plugin: true
           version: dev
           sync: false
-      # - name: Setup lando ${{ matrix.lando-version }}
+      - name: Install production dependencies
+        run: bun install --production --frozen-lockfile
+      # - name: Package into binary
+      #   uses: lando/pkg-action@v6
+      #   id: pkg-action
+      #   with:
+      #     entrypoint: bin/lando
+      #     filename: lando
+      #     node-version: ${{ matrix.node-version }}
+      #     options: --options dns-result-order=ipv4first
+      #     upload: false
+      #     pkg: '@yao-pkg/pkg@5.16.1'
+      - name: Install development deps
+        run: bun install
+      # - name: Setup lando ${{ steps.pkg-action.outputs.file }}
       #   uses: lando/setup-lando@v3
       #   with:
-      #     lando-version: ${{ matrix.lando-version }}
+      #     lando-version: ${{ steps.pkg-action.outputs.file }}
       #     telemetry: false
       #     config: |
       #       setup.skipCommonPlugins=true
-      #       setup.plugins.@lando/core-next=/home/runner/work/core-next/core-next
-
-      # @TODO: swtich to @lando/setup-lando action?
-      # - name: Globally dogfood the plugin
-      #   run: |
-      #     mkdir -p ~/.local/share/lando/plugins/@lando
-      #     ln -sf "$(pwd)" ~/.local/share/lando/plugins/@lando/core-next
-      #     ls -lsa ~/.local/share/lando/plugins/@lando
-      #     lando version --clear
-      # - name: Verify we can run the packaged CLI
-      #   run: |
-      #     lando version --all
-      #     lando config
-      #     lando plugins
-      #     lando registry
-
       # - name: Run Leia Tests
       #   uses: lando/run-leia-action@v2
       #   with:
-      #     leia-test: "./${{ matrix.leia-test }}/README.md"
-      #     cleanup-header: "Destroy tests"
-      #     shell: bash
+      #     leia-test: './examples/${{ matrix.leia-test }}/README.md'
+      #     cleanup-header: 'Destroy tests'
+      #     shell: ${{ matrix.shell }}
       #     stdin: true
