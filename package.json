@@ -3,7 +3,7 @@
   "description": "A next generation development tool.",
   "version": "4.0.0-unstable.0",
   "author": "Mike Pirog @pirog",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "repository": "lando/devtool",
   "bugs": "https://github.com/lando/devtool/issues/new/choose",
   "homepage": "https://github.com/lando/devtool",
