@@ -9,8 +9,8 @@ describe('traverse-up', () => {
   test('should generate paths upwards', () => {
     const start = path.resolve('/', 'a', 'b', 'c');
     const res = traverseUp(['f'], start);
-    const root = getPlatform() === 'win32' ? 'C:\\f' : 'f';
+    const root = getPlatform() === 'win32' ? path.parse(start).root : '';
     expect(res[0]).toBe(path.join(start, 'f'));
-    expect(res[res.length - 1]).toBe(path.join(root));
+    expect(res[res.length - 1]).toBe(path.join(root, 'f'));
   });
 });
